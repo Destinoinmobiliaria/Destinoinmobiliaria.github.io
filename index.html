@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Destino · Inmuebles activos en Barbosa, Antioquia</title>
+<meta name="description" content="Casas, apartamentos, fincas y lotes de varias inmobiliarias de Barbosa, Antioquia, en un solo mapa. Solo se muestra lo que sigue disponible.">
+<meta name="theme-color" content="#1d2a3a">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' fill='%23f4c600'/%3E%3Cpath d='M50 80S75 58 75 40a25 25 0 00-50 0c0 18 25 40 25 40z' fill='%231d2a3a'/%3E%3Ccircle cx='50' cy='40' r='9' fill='%23f4c600'/%3E%3C/svg%3E">
+
+<script>
+  /* Aplica el tema antes de pintar para evitar parpadeos */
+  (function () {
+    var t = null;
+    try { t = localStorage.getItem('destino:tema'); } catch (e) {}
+    if (!t) t = window.matchMedia && matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', t);
+  })();
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Figtree:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+
+<style>
+  :root {
+    --azul: #1d2a3a;
+    --amarillo: #f4c600;
+    --crema: #f6eee0;
+
+    --bg: #f2f3f7;
+    --surface: #ffffff;
+    --surface-2: #e8eaf1;
+    --ink: #1d2a3a;
+    --muted: #556173;
+    --line: #d9dde7;
+    --accent: #f4c600;
+    --on-accent: #1d2a3a;
+    --focus: #1d2a3a;
+    --shadow: 0 8px 28px rgba(29, 42, 58, .14);
+    --display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+    --body: "Figtree", "Segoe UI", system-ui, sans-serif;
+    --hh: 150px;
+  }
+  [data-theme="dark"] {
+    --bg: #1d2a3a;
+    --surface: #263749;
+    --surface-2: #2e4156;
+    --ink: #f6eee0;
+    --muted: #aab4c0;
+    --line: #38495e;
+    --focus: #f4c600;
+    --shadow: 0 8px 28px rgba(0, 0, 0, .38);
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font: 400 16px/1.5 var(--body);
+    -webkit-font-smoothing: antialiased;
+  }
+  button, input, select { font: inherit; color: inherit; }
+  button { cursor: pointer; }
+  :focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+  .ic { flex: none; }
+  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  [hidden] { display: none !important; }
+
+  /* ---------- Encabezado ---------- */
+  .top {
+    position: sticky; top: 0; z-index: 500;
+    background: var(--bg);
+    border-bottom: 1px solid var(--line);
+  }
+  .bar {
+    display: grid; grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center; gap: 16px;
+    max-width: 1560px; margin: 0 auto; padding: 14px 24px;
+  }
+  .brand {
+    display: flex; align-items: center; gap: 10px;
+    background: none; border: 0; padding: 0; text-align: left;
+  }
+  .brand .mark {
+    width: 38px; height: 38px; border-radius: 11px;
+    background: var(--accent); color: var(--azul);
+    display: grid; place-items: center;
+  }
+  .brand b { font: 800 22px/1 var(--display); letter-spacing: -.02em; display: block; }
+  .brand small { color: var(--muted); font-size: 12px; display: block; margin-top: 2px; }
+
+  .search {
+    display: flex; align-items: center; gap: 8px;
+    max-width: 640px; width: 100%; margin: 0 auto;
+    background: var(--surface); border: 1px solid var(--line);
+    border-radius: 999px; padding: 6px 6px 6px 18px;
+    box-shadow: var(--shadow);
+  }
+  .search input {
+    flex: 1; min-width: 0; border: 0; background: transparent; outline: 0; padding: 8px 0;
+  }
+  .search input::placeholder { color: var(--muted); }
+  .search:focus-within { outline: 3px solid var(--focus); outline-offset: 2px; }
+  .go {
+    width: 40px; height: 40px; border-radius: 50%; border: 0;
+    background: var(--accent); color: var(--on-accent);
+    display: grid; place-items: center;
+  }
+  .tools { display: flex; align-items: center; gap: 8px; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    border: 1px solid var(--line); background: var(--surface); color: var(--ink);
+    border-radius: 999px; padding: 9px 16px; font-weight: 600;
+  }
+  .btn:hover { border-color: var(--ink); }
+  .btn.solid { background: var(--accent); color: var(--on-accent); border-color: var(--accent); }
+  .btn.solid:hover { filter: brightness(.96); border-color: var(--accent); }
+  .btn .ic { color: var(--accent); }
+  .btn.solid .ic { color: var(--on-accent); }
+  .btn.round { padding: 0; width: 42px; height: 42px; justify-content: center; }
+  .btn[aria-pressed="true"] { border-color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent); }
+  .btn[aria-pressed="true"] .ic { fill: var(--accent); }
+  .badge {
+    background: var(--accent); color: var(--on-accent);
+    border-radius: 999px; font-size: 12px; font-weight: 700; padding: 0 7px; line-height: 20px;
+  }
+
+  .sub {
+    display: flex; align-items: center; gap: 20px;
+    max-width: 1560px; margin: 0 auto; padding: 0 24px 12px;
+  }
+  .types { display: flex; gap: 6px; overflow-x: auto; flex: 1; scrollbar-width: none; padding: 2px; }
+  .types::-webkit-scrollbar { display: none; }
+  .type {
+    display: flex; flex-direction: column; align-items: center; gap: 4px;
+    background: none; border: 0; border-bottom: 3px solid transparent;
+    padding: 6px 14px 5px; color: var(--muted); font-size: 13px; font-weight: 600; white-space: nowrap;
+  }
+  .type .ic { color: var(--accent); }
+  .type:hover { color: var(--ink); }
+  .type[aria-pressed="true"] { color: var(--ink); border-bottom-color: var(--accent); }
+  .seg { display: flex; background: var(--surface); border: 1px solid var(--line); border-radius: 999px; padding: 3px; }
+  .seg button {
+    border: 0; background: none; border-radius: 999px; padding: 7px 16px; font-weight: 600; color: var(--muted);
+  }
+  .seg button[aria-pressed="true"] { background: var(--accent); color: var(--on-accent); }
+
+  /* ---------- Inicio ---------- */
+  .wrap { max-width: 1560px; margin: 0 auto; padding: 0 24px; }
+  .intro { padding: 36px 0 8px; max-width: 760px; }
+  .intro h1 {
+    font: 800 clamp(30px, 4.6vw, 54px)/1.04 var(--display);
+    letter-spacing: -.03em; margin: 0 0 14px;
+  }
+  .intro p { margin: 0; color: var(--muted); font-size: 18px; max-width: 60ch; }
+  .live { display: inline-flex; align-items: center; gap: 8px; margin-top: 18px; font-weight: 600; }
+  .live i { width: 10px; height: 10px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 30%, transparent); }
+
+  .row { padding: 30px 0 0; }
+  .row header { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 14px; }
+  .row h2 { font: 700 24px/1.15 var(--display); letter-spacing: -.02em; margin: 0; }
+  .link { background: none; border: 0; color: var(--ink); font-weight: 600; text-decoration: underline; text-decoration-color: var(--accent); text-decoration-thickness: 3px; text-underline-offset: 4px; padding: 4px 0; }
+  .rail {
+    display: grid; grid-auto-flow: column; grid-auto-columns: minmax(250px, 280px);
+    gap: 18px; overflow-x: auto; scroll-snap-type: x proximity; padding: 4px 4px 18px; margin: 0 -4px;
+  }
+  .rail > * { scroll-snap-align: start; }
+
+  /* ---------- Tarjeta ---------- */
+  .card {
+    background: transparent; border-radius: 18px; cursor: pointer; min-width: 0;
+    transition: transform .15s ease;
+  }
+  .card:hover { transform: translateY(-2px); }
+  .card.on .art { outline: 3px solid var(--accent); outline-offset: 2px; }
+  .art {
+    position: relative; aspect-ratio: 4 / 3; border-radius: 18px; overflow: hidden;
+    display: grid; place-items: center; color: var(--accent);
+  }
+  .art img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .fav {
+    position: absolute; top: 10px; right: 10px; width: 38px; height: 38px; border-radius: 50%;
+    border: 0; background: rgba(29, 42, 58, .72); color: var(--crema); display: grid; place-items: center;
+  }
+  .fav[aria-pressed="true"] { background: var(--accent); color: var(--azul); }
+  .fav[aria-pressed="true"] .ic { fill: currentColor; }
+  .tag {
+    position: absolute; top: 10px; left: 10px; background: var(--accent); color: var(--on-accent);
+    font-size: 12px; font-weight: 700; padding: 3px 10px; border-radius: 999px;
+  }
+  .info { padding: 12px 2px 0; }
+  .info h3 { font: 700 17px/1.25 var(--display); margin: 0; letter-spacing: -.01em; }
+  .where { margin: 2px 0 0; color: var(--muted); font-size: 14px; }
+  .specs { display: flex; flex-wrap: wrap; gap: 4px 14px; margin: 8px 0 0; font-size: 14px; }
+  .specs span { display: inline-flex; align-items: center; gap: 5px; }
+  .specs .ic { color: var(--accent); }
+  .price { margin: 8px 0 0; font: 800 19px/1.2 var(--display); letter-spacing: -.01em; }
+  .price small { font: 500 14px var(--body); color: var(--muted); }
+  .ver { display: flex; align-items: center; gap: 6px; margin: 6px 0 0; font-size: 13px; color: var(--muted); }
+  .ver .ic { color: var(--accent); }
+
+  /* ---------- Resultados + mapa ---------- */
+  .split { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: 0; align-items: start; }
+  .list { padding: 22px 24px 60px; }
+  .list-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-bottom: 18px; }
+  .list-head h1 { font: 700 22px/1.2 var(--display); margin: 0; letter-spacing: -.02em; }
+  .sort { border: 1px solid var(--line); background: var(--surface); border-radius: 999px; padding: 8px 14px; font-weight: 600; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 26px 18px; }
+  .mapbox { position: sticky; top: var(--hh); height: calc(100dvh - var(--hh)); }
+  #map { position: absolute; inset: 0; background: var(--surface-2); }
+  .empty { padding: 50px 0; max-width: 46ch; }
+  .empty h2 { font: 700 24px/1.2 var(--display); margin: 0 0 8px; }
+  .empty p { color: var(--muted); margin: 0 0 18px; }
+
+  .pin span {
+    position: absolute; transform: translate(-50%, -50%); white-space: nowrap;
+    background: var(--amarillo); color: var(--azul); font: 800 13px/1 var(--display);
+    padding: 7px 10px; border-radius: 999px; border: 2px solid var(--azul);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, .3);
+    transition: transform .12s ease;
+  }
+  .pin.on { z-index: 1000 !important; }
+  .pin.on span { background: var(--azul); color: var(--amarillo); border-color: var(--amarillo); transform: translate(-50%, -50%) scale(1.14); }
+  .leaflet-container { font-family: var(--body); }
+  .leaflet-popup-content-wrapper, .leaflet-popup-tip { background: var(--surface); color: var(--ink); }
+  .leaflet-popup-content-wrapper { border-radius: 14px; }
+  .leaflet-popup-content { margin: 12px 14px; min-width: 190px; }
+  .pop b { display: block; font: 700 15px/1.25 var(--display); }
+  .pop span { color: var(--muted); font-size: 13px; display: block; margin: 2px 0 8px; }
+  .pop strong { font: 800 17px var(--display); display: block; margin-bottom: 8px; }
+  .pop button { width: 100%; border: 0; border-radius: 999px; background: var(--accent); color: var(--on-accent); font-weight: 700; padding: 8px 12px; }
+  .leaflet-control-attribution { background: color-mix(in srgb, var(--bg) 80%, transparent) !important; color: var(--muted) !important; }
+  .leaflet-control-attribution a { color: var(--ink) !important; }
+
+  .floating {
+    display: none; position: fixed; left: 50%; bottom: 22px; transform: translateX(-50%); z-index: 600;
+    box-shadow: var(--shadow);
+  }
+
+  /* ---------- Diálogos ---------- */
+  dialog {
+    border: 0; padding: 0; background: var(--surface); color: var(--ink);
+    border-radius: 24px; box-shadow: var(--shadow); width: min(640px, calc(100vw - 24px)); max-height: calc(100dvh - 24px);
+  }
+  dialog::backdrop { background: rgba(10, 16, 24, .6); }
+  .dlg-h { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; border-bottom: 1px solid var(--line); position: sticky; top: 0; background: var(--surface); z-index: 2; }
+  .dlg-h h2 { font: 700 20px var(--display); margin: 0; }
+  .dlg-b { padding: 8px 20px 20px; }
+  .dlg-f { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 14px 20px; border-top: 1px solid var(--line); position: sticky; bottom: 0; background: var(--surface); }
+  fieldset { border: 0; padding: 18px 0; margin: 0; border-bottom: 1px solid var(--line); min-width: 0; }
+  fieldset:last-of-type { border-bottom: 0; }
+  legend { font: 700 17px var(--display); padding: 0; margin-bottom: 12px; }
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .field { display: block; }
+  .field span { display: block; font-size: 13px; color: var(--muted); margin-bottom: 4px; }
+  .field input { width: 100%; border: 1px solid var(--line); background: var(--bg); border-radius: 12px; padding: 10px 12px; }
+  .opts { display: flex; flex-wrap: wrap; gap: 8px; }
+  .opt { border: 1px solid var(--line); background: var(--surface); border-radius: 999px; padding: 8px 16px; font-weight: 600; }
+  .opt[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+  .hint { color: var(--muted); font-size: 13px; margin: 8px 0 0; }
+
+  .d-art { aspect-ratio: 16 / 8; position: relative; display: grid; place-items: center; color: var(--accent); border-radius: 24px 24px 0 0; overflow: hidden; }
+  .d-art img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .d-close { position: absolute; top: 12px; right: 12px; z-index: 3; width: 40px; height: 40px; border-radius: 50%; border: 0; background: rgba(29, 42, 58, .78); color: var(--crema); display: grid; place-items: center; }
+  .d-body { padding: 20px 24px 8px; }
+  .d-body h2 { font: 800 28px/1.15 var(--display); letter-spacing: -.02em; margin: 0 0 4px; }
+  .d-price { font: 800 26px var(--display); margin: 14px 0 0; }
+  .d-price small { font: 500 15px var(--body); color: var(--muted); }
+  .d-specs { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 10px; margin: 18px 0; }
+  .d-specs div { background: var(--bg); border-radius: 14px; padding: 12px; display: flex; flex-direction: column; gap: 2px; }
+  .d-specs .ic { color: var(--accent); margin-bottom: 4px; }
+  .d-specs b { font: 700 18px var(--display); }
+  .d-specs span { color: var(--muted); font-size: 13px; }
+  .d-desc { color: var(--ink); max-width: 62ch; margin: 0 0 16px; }
+  .d-from { background: var(--bg); border-radius: 14px; padding: 12px 14px; margin-bottom: 8px; }
+  .d-from b { display: block; }
+  .d-from span { color: var(--muted); font-size: 14px; }
+  .d-actions { display: flex; flex-wrap: wrap; gap: 10px; padding: 12px 24px 24px; }
+  .d-actions a { text-decoration: none; }
+
+  .foot { padding: 40px 24px 70px; color: var(--muted); font-size: 14px; max-width: 1560px; margin: 0 auto; }
+  .foot p { margin: 0 0 6px; max-width: 80ch; }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 959px) {
+    .bar { grid-template-columns: 1fr auto; padding: 12px 16px; }
+    .search { grid-column: 1 / -1; grid-row: 2; max-width: none; }
+    .brand small { display: none; }
+    .sub { padding: 0 16px 10px; gap: 10px; flex-wrap: wrap; }
+    .wrap { padding: 0 16px; }
+    .split { grid-template-columns: 1fr; }
+    .list { padding: 18px 16px 100px; }
+    .mapbox { position: fixed; inset: 0; top: var(--hh); height: auto; z-index: 400; display: none; }
+    body.show-map .mapbox { display: block; }
+    body.show-map .list { display: none; }
+    body.has-results .floating { display: inline-flex; }
+    .btn .lbl { display: none; }
+    .btn.keep .lbl { display: inline; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; scroll-behavior: auto !important; }
+  }
+</style>
+</head>
+
+<body>
+<header class="top" id="top">
+  <div class="bar">
+    <button class="brand" id="home-btn" aria-label="Destino, ir al inicio">
+      <span class="mark" id="logo-mark"></span>
+      <span><b>Destino</b><small>Barbosa, Antioquia</small></span>
+    </button>
+
+    <form class="search" id="search" role="search" autocomplete="off">
+      <label class="sr" for="q">Buscar inmuebles</label>
+      <input id="q" type="search" list="sugerencias" placeholder="Busca por zona, tipo o inmobiliaria">
+      <datalist id="sugerencias"></datalist>
+      <button class="go" type="submit" aria-label="Buscar" id="go-ic"></button>
+    </form>
+
+    <div class="tools">
+      <button class="btn keep" id="filters-btn"><span id="filters-ic"></span><span class="lbl">Filtros</span><span class="badge" id="filters-n" hidden>0</span></button>
+      <button class="btn round" id="fav-btn" aria-pressed="false" aria-label="Ver solo favoritos" title="Favoritos"></button>
+      <button class="btn round" id="theme-btn" aria-label="Cambiar a modo claro" title="Cambiar tema"></button>
+    </div>
+  </div>
+
+  <div class="sub">
+    <div class="types" id="types" role="group" aria-label="Tipo de inmueble"></div>
+    <div class="seg" id="ops" role="group" aria-label="Operación">
+      <button data-op="" aria-pressed="true">Todo</button>
+      <button data-op="venta" aria-pressed="false">Comprar</button>
+      <button data-op="arriendo" aria-pressed="false">Arrendar</button>
+    </div>
+  </div>
+</header>
+
+<main id="home">
+  <div class="wrap">
+    <section class="intro">
+      <h1>Todo lo que se vende y arrienda en Barbosa, en un solo lugar.</h1>
+      <p>Reunimos los inmuebles de varias inmobiliarias y solo mostramos los que siguen disponibles. Sin saltar entre Instagram y Facebook.</p>
+      <div class="live"><i></i><span id="live-text">Cargando inmuebles…</span></div>
+    </section>
+    <div id="rows"></div>
+  </div>
+</main>
+
+<main id="results" hidden>
+  <div class="split">
+    <section class="list">
+      <div class="list-head">
+        <h1 id="count">…</h1>
+        <label class="sr" for="sort">Ordenar por</label>
+        <select class="sort" id="sort">
+          <option value="rel">Más relevantes</option>
+          <option value="new">Verificados recientemente</option>
+          <option value="asc">Precio: menor a mayor</option>
+          <option value="desc">Precio: mayor a menor</option>
+        </select>
+      </div>
+      <div class="grid" id="grid"></div>
+    </section>
+    <aside class="mapbox"><div id="map" role="application" aria-label="Mapa de inmuebles en Barbosa"></div></aside>
+  </div>
+</main>
+
+<button class="btn solid floating" id="map-toggle"><span id="map-toggle-ic"></span><span id="map-toggle-t">Ver mapa</span></button>
+
+<footer class="foot" id="foot"></footer>
+
+<!-- Filtros -->
+<dialog id="dlg-filters" aria-labelledby="df-t">
+  <div class="dlg-h"><h2 id="df-t">Filtros</h2><button class="btn round" data-close aria-label="Cerrar"></button></div>
+  <div class="dlg-b">
+    <fieldset>
+      <legend>Precio en pesos</legend>
+      <div class="two">
+        <label class="field"><span>Mínimo</span><input id="pmin" inputmode="numeric" placeholder="Sin mínimo"></label>
+        <label class="field"><span>Máximo</span><input id="pmax" inputmode="numeric" placeholder="Sin máximo"></label>
+      </div>
+      <p class="hint" id="price-hint">Escribe el valor completo, por ejemplo 250000000.</p>
+    </fieldset>
+    <fieldset>
+      <legend>Habitaciones</legend>
+      <div class="opts" id="f-hab"></div>
+    </fieldset>
+    <fieldset>
+      <legend>Baños</legend>
+      <div class="opts" id="f-banos"></div>
+    </fieldset>
+    <fieldset>
+      <legend>Tamaño en m²</legend>
+      <div class="two">
+        <label class="field"><span>Desde</span><input id="amin" inputmode="numeric" placeholder="Sin mínimo"></label>
+        <label class="field"><span>Hasta</span><input id="amax" inputmode="numeric" placeholder="Sin máximo"></label>
+      </div>
+    </fieldset>
+    <fieldset>
+      <legend>Zona de Barbosa</legend>
+      <div class="opts" id="f-zonas"></div>
+    </fieldset>
+  </div>
+  <div class="dlg-f">
+    <button class="link" id="f-clear">Limpiar todo</button>
+    <button class="btn solid" id="f-apply" data-close>Ver inmuebles</button>
+  </div>
+</dialog>
+
+<!-- Detalle -->
+<dialog id="dlg-detail" aria-label="Detalle del inmueble"></dialog>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script>
+/* =====================================================================
+   DATOS
+   Para usar datos reales, publica un archivo "propiedades.json" junto a
+   este index.html con una lista de objetos con los mismos campos que
+   DEMO. Si el archivo existe, se usa; si no, se usan los datos de prueba.
+   Un inmueble se muestra solo si activo !== false y su fecha de
+   verificación tiene como máximo DIAS_MAX días.
+   ===================================================================== */
+const FUENTE = 'propiedades.json';
+const DIAS_MAX = 21;
+const CENTRO = [6.4377, -75.3314];
+
+const DEMO = [
+  { id: 1,  titulo: 'Casa esquinera con patio amplio', tipo: 'casa', op: 'venta', precio: 420000000, hab: 4, banos: 3, area: 180, zona: 'Centro', lat: 6.4385, lng: -75.3322, inmo: 'Aliada Inmobiliaria', destacada: true, activo: true, dias: 1, vistas: 310, desc: 'Casa de dos niveles a pocas cuadras del parque principal, con patio, zona de ropas y espacio para dos carros.' },
+  { id: 2,  titulo: 'Apartamento remodelado cerca al parque', tipo: 'apartamento', op: 'venta', precio: 235000000, hab: 3, banos: 2, area: 78, zona: 'Centro', lat: 6.4369, lng: -75.3305, inmo: 'Hogar Barbosa', activo: true, dias: 2, vistas: 220, desc: 'Tercer piso con balcón, cocina integral y buena ventilación. Edificio con portería y ascensor.' },
+  { id: 3,  titulo: 'Casa campestre con piscina', tipo: 'casa', op: 'venta', precio: 690000000, hab: 4, banos: 4, area: 320, zona: 'Popalito', lat: 6.4452, lng: -75.3410, inmo: 'Cordillera Propiedades', destacada: true, activo: true, dias: 3, vistas: 480, desc: 'Lote plano con piscina, zona BBQ y vista a la montaña. A diez minutos del centro por vía pavimentada.' },
+  { id: 4,  titulo: 'Apartamento en arriendo en el centro', tipo: 'apartamento', op: 'arriendo', precio: 1400000, hab: 2, banos: 1, area: 58, zona: 'Centro', lat: 6.4392, lng: -75.3298, inmo: 'Aliada Inmobiliaria', activo: true, dias: 1, vistas: 190, desc: 'Segundo piso, luminoso, con cocina abierta y lavadero. Cerca de comercio y transporte.' },
+  { id: 5,  titulo: 'Casa de dos pisos en conjunto cerrado', tipo: 'casa', op: 'venta', precio: 365000000, hab: 3, banos: 3, area: 120, zona: 'Isaza', lat: 6.4507, lng: -75.3172, inmo: 'Casas del Norte', activo: true, dias: 5, vistas: 160, desc: 'Conjunto con vigilancia, zona verde y parqueadero de visitantes. Casa lista para habitar.' },
+  { id: 6,  titulo: 'Lote para construir con escritura', tipo: 'lote', op: 'venta', precio: 120000000, hab: 0, banos: 0, area: 600, zona: 'Graciano', lat: 6.4311, lng: -75.3491, inmo: 'Cordillera Propiedades', activo: true, dias: 4, vistas: 95, desc: 'Lote plano con servicios públicos cerca, acceso por vía destapada en buen estado.' },
+  { id: 7,  titulo: 'Finca de recreo con árboles frutales', tipo: 'finca', op: 'venta', precio: 880000000, hab: 5, banos: 4, area: 450, zona: 'Yarumito', lat: 6.4561, lng: -75.3288, inmo: 'Hogar Barbosa', destacada: true, activo: true, dias: 4, vistas: 520, desc: 'Casa principal, casa de huéspedes, kiosco y quebrada propia. Ideal para descanso o proyecto turístico.' },
+  { id: 8,  titulo: 'Casa en arriendo con parqueadero', tipo: 'casa', op: 'arriendo', precio: 2100000, hab: 3, banos: 2, area: 95, zona: 'Hatillo', lat: 6.4243, lng: -75.3262, inmo: 'Casas del Norte', activo: true, dias: 2, vistas: 140, desc: 'Casa independiente con garaje cubierto, patio y cocina integral.' },
+  { id: 9,  titulo: 'Local comercial sobre vía principal', tipo: 'local', op: 'arriendo', precio: 3200000, hab: 0, banos: 1, area: 45, zona: 'Centro', lat: 6.4376, lng: -75.3331, inmo: 'Aliada Inmobiliaria', activo: true, dias: 6, vistas: 105, desc: 'Local con vitrina amplia y buen flujo peatonal. Incluye baño y bodega pequeña.' },
+  { id: 10, titulo: 'Apartamento nuevo con balcón', tipo: 'apartamento', op: 'venta', precio: 198000000, hab: 2, banos: 2, area: 64, zona: 'Santa Rita', lat: 6.4208, lng: -75.3372, inmo: 'Hogar Barbosa', activo: true, dias: 6, vistas: 250, desc: 'Proyecto entregado este año, con zona social, parqueadero y salón comunal.' },
+  { id: 11, titulo: 'Casa familiar con terraza', tipo: 'casa', op: 'arriendo', precio: 2600000, hab: 4, banos: 3, area: 140, zona: 'Popalito', lat: 6.4431, lng: -75.3384, inmo: 'Cordillera Propiedades', activo: true, dias: 8, vistas: 130, desc: 'Casa de dos pisos con terraza y cuarto de servicio. Barrio tranquilo.' },
+  { id: 12, titulo: 'Lote en conjunto campestre', tipo: 'lote', op: 'venta', precio: 175000000, hab: 0, banos: 0, area: 1000, zona: 'Isaza', lat: 6.4489, lng: -75.3199, inmo: 'Casas del Norte', activo: true, dias: 7, vistas: 88, desc: 'Lote de 1.000 m² dentro de conjunto con portería y vías internas.' },
+  { id: 13, titulo: 'Apartamento amoblado', tipo: 'apartamento', op: 'arriendo', precio: 1900000, hab: 1, banos: 1, area: 42, zona: 'Centro', lat: 6.4360, lng: -75.3318, inmo: 'Hogar Barbosa', activo: true, dias: 3, vistas: 170, desc: 'Totalmente amoblado y dotado, servicios incluidos. Ideal para una o dos personas.' },
+  { id: 14, titulo: 'Casa antigua restaurada', tipo: 'casa', op: 'venta', precio: 510000000, hab: 5, banos: 3, area: 260, zona: 'Centro', lat: 6.4398, lng: -75.3340, inmo: 'Aliada Inmobiliaria', activo: true, dias: 9, vistas: 205, desc: 'Casa de patio central con acabados originales restaurados. Uso mixto permitido.' },
+  { id: 15, titulo: 'Casa en Hatillo (ya vendida)', tipo: 'casa', op: 'venta', precio: 300000000, hab: 3, banos: 2, area: 110, zona: 'Hatillo', lat: 6.4262, lng: -75.3241, inmo: 'Casas del Norte', activo: false, dias: 12, vistas: 70, desc: 'Inactiva: ya fue vendida.' },
+  { id: 16, titulo: 'Apartamento en Graciano (retirado)', tipo: 'apartamento', op: 'arriendo', precio: 1100000, hab: 2, banos: 1, area: 50, zona: 'Graciano', lat: 6.4330, lng: -75.3470, inmo: 'Hogar Barbosa', activo: false, dias: 2, vistas: 40, desc: 'Inactivo: el propietario lo retiró.' },
+  { id: 17, titulo: 'Finca en Santa Rita (sin verificar)', tipo: 'finca', op: 'venta', precio: 750000000, hab: 4, banos: 3, area: 380, zona: 'Santa Rita', lat: 6.4190, lng: -75.3399, inmo: 'Cordillera Propiedades', activo: true, dias: 40, vistas: 60, desc: 'Sin verificar hace más de 21 días: no se muestra.' },
+  { id: 18, titulo: 'Apartamento en arriendo cerca a la vía', tipo: 'apartamento', op: 'arriendo', precio: 1200000, hab: 2, banos: 1, area: 55, zona: 'Isaza', lat: 6.4521, lng: -75.3159, inmo: 'Casas del Norte', activo: true, dias: 4, vistas: 115, desc: 'Apartamento en primer piso con patio pequeño y parqueadero para moto.' }
+].map(p => ({ ...p, whatsapp: '573000000000' }));
+
+/* =====================================================================
+   UTILIDADES
+   ===================================================================== */
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const norm = s => String(s ?? '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const num = v => Number(String(v).replace(/\D/g, '')) || 0;
+const COP = new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 });
+const TIPO = { casa: 'Casa', apartamento: 'Apartamento', finca: 'Finca', lote: 'Lote', local: 'Local' };
+const TIPO_PL = { casa: 'Casas', apartamento: 'Apartamentos', finca: 'Fincas', lote: 'Lotes', local: 'Locales' };
+
+const ICONS = {
+  home: '<path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/>',
+  apartamento: '<rect x="5" y="3" width="14" height="18" rx="1"/><path d="M9 8h2M13 8h2M9 12h2M13 12h2M10 21v-4h4v4"/>',
+  casa: '<path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/>',
+  finca: '<path d="M12 22v-7"/><path d="M12 15c-4 0-7-2.5-7-6.2C5 5 8 2 12 2s7 3 7 6.8c0 3.7-3 6.2-7 6.2z"/>',
+  lote: '<path d="M3 7l6-3 6 3 6-3v13l-6 3-6-3-6 3z"/><path d="M9 4v13M15 7v13"/>',
+  local: '<path d="M4 9l1.5-5h13L20 9"/><path d="M4 9a2.5 2.5 0 005 0 2.5 2.5 0 005 0 2.5 2.5 0 005 0"/><path d="M5 12v8h14v-8"/>',
+  todas: '<rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/>',
+  heart: '<path d="M12 21s-7-4.5-9.3-9A5.2 5.2 0 0112 6.5 5.2 5.2 0 0121.3 12C19 16.5 12 21 12 21z"/>',
+  search: '<circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/>',
+  sliders: '<path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12M20 18h0"/><circle cx="16" cy="6" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="18" cy="18" r="2"/>',
+  sun: '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5L19 19M5 19l1.5-1.5M17.5 6.5L19 5"/>',
+  moon: '<path d="M21 13A9 9 0 1111 3a7 7 0 0010 10z"/>',
+  bed: '<path d="M3 18V8M3 14h18v4M21 14v-2a3 3 0 00-3-3h-7v5"/><circle cx="7" cy="11.5" r="1.5"/>',
+  bath: '<path d="M4 12h16v3a4 4 0 01-4 4H8a4 4 0 01-4-4z"/><path d="M6 12V6a2 2 0 013.5-1.3"/><path d="M7 19l-1 2M17 19l1 2"/>',
+  area: '<path d="M4 20L20 4M4 20h6M4 20v-6M20 4h-6M20 4v6"/>',
+  check: '<path d="M5 12.5l4.5 4.5L19 7.5"/>',
+  map: '<path d="M9 4L3 6v14l6-2 6 2 6-2V4l-6 2z"/><path d="M9 4v14M15 6v14"/>',
+  list: '<path d="M8 6h12M8 12h12M8 18h12M4 6h.01M4 12h.01M4 18h.01"/>',
+  x: '<path d="M6 6l12 12M18 6L6 18"/>',
+  pin: '<path d="M12 21s7-6.2 7-11.5A7 7 0 005 9.5C5 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/>'
+};
+const ic = (n, s = 20) => `<svg class="ic" width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONS[n] || ''}</svg>`;
+
+const short = n => {
+  const m = n / 1e6;
+  return '$' + (m >= 10 ? Math.round(m) : (Math.round(m * 10) / 10).toString().replace('.', ',')) + ' M';
+};
+const hace = d => d <= 0 ? 'hoy' : d === 1 ? 'ayer' : `hace ${d} días`;
+const store = {
+  get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
+  set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
+};
+
+/* =====================================================================
+   ESTADO
+   ===================================================================== */
+let ALL = [];          // todo lo que llega de las inmobiliarias
+let LIVE = [];         // solo lo activo y verificado
+let usingDemo = true;
+
+const S = { q: '', op: '', tipos: new Set(), zonas: new Set(), pmin: 0, pmax: 0, hab: 0, banos: 0, amin: 0, amax: 0, fav: false, sort: 'rel', explore: false };
+let FAV = new Set();
+try { FAV = new Set(JSON.parse(store.get('destino:fav') || '[]')); } catch (e) {}
+
+const diasDe = p => p.verificada ? Math.max(0, Math.floor((Date.now() - new Date(p.verificada).getTime()) / 864e5)) : (p.dias ?? 999);
+const score = p => (p.destacada ? 100 : 0) + Math.max(0, 30 - p.dias) + (p.vistas || 0) / 10;
+
+function match(p) {
+  if (S.op && p.op !== S.op) return false;
+  if (S.tipos.size && !S.tipos.has(p.tipo)) return false;
+  if (S.zonas.size && !S.zonas.has(p.zona)) return false;
+  if (S.pmin && p.precio < S.pmin) return false;
+  if (S.pmax && p.precio > S.pmax) return false;
+  if (S.hab && p.hab < S.hab) return false;
+  if (S.banos && p.banos < S.banos) return false;
+  if (S.amin && p.area < S.amin) return false;
+  if (S.amax && p.area > S.amax) return false;
+  if (S.fav && !FAV.has(p.id)) return false;
+  if (S.q) {
+    const h = norm([p.titulo, p.zona, TIPO[p.tipo], TIPO_PL[p.tipo], p.inmo, p.op === 'venta' ? 'venta comprar' : 'arriendo arrendar alquiler'].join(' '));
+    if (!S.q.split(/\s+/).every(t => h.includes(t))) return false;
+  }
+  return true;
+}
+const sorters = {
+  rel: (a, b) => score(b) - score(a),
+  new: (a, b) => a.dias - b.dias || score(b) - score(a),
+  asc: (a, b) => a.precio - b.precio,
+  desc: (a, b) => b.precio - a.precio
+};
+const detailFilters = () => (S.pmin || S.pmax ? 1 : 0) + (S.hab ? 1 : 0) + (S.banos ? 1 : 0) + (S.amin || S.amax ? 1 : 0) + (S.zonas.size ? 1 : 0);
+const isSearching = () => S.explore || S.q || S.op || S.tipos.size || S.fav || detailFilters() > 0;
+
+/* =====================================================================
+   TARJETAS
+   ===================================================================== */
+const gradients = [
+  'linear-gradient(135deg,#2c4159,#1d2a3a)',
+  'linear-gradient(135deg,#35506d,#243649)',
+  'linear-gradient(135deg,#1d2a3a,#3a2f1a)'
+];
+function art(p, size = 64) {
+  const g = gradients[p.id % gradients.length];
+  const img = p.foto ? `<img src="${esc(p.foto)}" alt="" loading="lazy">` : '';
+  return `<div class="art" style="background:${g}">${p.foto ? '' : ic(p.tipo, size)}${img}`;
+}
+function specs(p) {
+  const s = [];
+  if (p.hab) s.push(`<span>${ic('bed', 17)}${p.hab} hab.</span>`);
+  if (p.banos) s.push(`<span>${ic('bath', 17)}${p.banos} ${p.banos === 1 ? 'baño' : 'baños'}</span>`);
+  s.push(`<span>${ic('area', 17)}${p.area.toLocaleString('es-CO')} m²</span>`);
+  return s.join('');
+}
+const priceHTML = p => `${COP.format(p.precio)}${p.op === 'arriendo' ? ' <small>al mes</small>' : ''}`;
+
+function card(p) {
+  const fav = FAV.has(p.id);
+  return `<article class="card" data-id="${p.id}" tabindex="0" role="button" aria-label="${esc(p.titulo)}, ${esc(COP.format(p.precio))}">
+    ${art(p)}
+      <button class="fav" data-fav="${p.id}" aria-pressed="${fav}" aria-label="${fav ? 'Quitar de favoritos' : 'Guardar en favoritos'}">${ic('heart', 19)}</button>
+      ${p.destacada ? '<span class="tag">Destacada</span>' : ''}
+    </div>
+    <div class="info">
+      <h3>${esc(p.titulo)}</h3>
+      <p class="where">${esc(p.zona)}, Barbosa</p>
+      <div class="specs">${specs(p)}</div>
+      <p class="price">${priceHTML(p)}</p>
+      <p class="ver">${ic('check', 16)}Verificada ${hace(p.dias)} por ${esc(p.inmo)}</p>
+    </div>
+  </article>`;
+}
+
+/* =====================================================================
+   VISTAS
+   ===================================================================== */
+const rowsDef = [
+  { t: 'Lo más relevante ahora', act: 'all', f: () => true, s: 'rel' },
+  { t: 'Verificados esta semana', act: 'fresh', f: p => p.dias <= 7, s: 'new' },
+  { t: 'Para arrendar', act: 'rent', f: p => p.op === 'arriendo', s: 'rel' },
+  { t: 'Para comprar hasta $250 millones', act: 'cheap', f: p => p.op === 'venta' && p.precio <= 250e6, s: 'asc' },
+  { t: 'Fincas y lotes', act: 'rural', f: p => p.tipo === 'finca' || p.tipo === 'lote', s: 'rel' }
+];
+
+function renderHome() {
+  const base = LIVE;
+  $('#rows').innerHTML = rowsDef.map(r => {
+    const list = base.filter(r.f).sort(sorters[r.s]).slice(0, 8);
+    if (!list.length) return '';
+    return `<section class="row" aria-label="${esc(r.t)}">
+      <header><h2>${esc(r.t)}</h2><button class="link" data-act="${r.act}">Ver todo</button></header>
+      <div class="rail">${list.map(card).join('')}</div>
+    </section>`;
+  }).join('');
+}
+
+function renderResults() {
+  const list = LIVE.filter(match).sort(sorters[S.sort]);
+  $('#count').textContent = list.length === 1 ? '1 inmueble activo en Barbosa' : `${list.length} inmuebles activos en Barbosa`;
+  $('#grid').innerHTML = list.length ? list.map(card).join('') : '';
+  if (!list.length) {
+    $('#grid').innerHTML = `<div class="empty" style="grid-column:1/-1">
+      <h2>No hay inmuebles con esos filtros</h2>
+      <p>Prueba con un precio más alto, menos habitaciones o quita alguna zona.</p>
+      <button class="btn solid" data-act="reset">Quitar filtros</button></div>`;
+  }
+  initMap();
+  updateMap(list);
+  return list;
+}
+
+function render() {
+  const searching = isSearching();
+  $('#home').hidden = searching;
+  $('#results').hidden = !searching;
+  document.body.classList.toggle('has-results', searching);
+  if (!searching) { document.body.classList.remove('show-map'); renderHome(); }
+  else { renderResults(); setTimeout(() => map && map.invalidateSize(), 60); }
+  syncUI();
+  measure();
+}
+
+/* =====================================================================
+   MAPA
+   ===================================================================== */
+let map, layer, tile;
+const markers = new Map();
+const theme = () => document.documentElement.getAttribute('data-theme');
+
+function initMap() {
+  if (map || typeof L === 'undefined') return;
+  map = L.map('map', { zoomControl: true }).setView(CENTRO, 13);
+  layer = L.layerGroup().addTo(map);
+  setTiles();
+}
+function setTiles() {
+  if (!map) return;
+  if (tile) tile.remove();
+  const k = theme() === 'dark' ? 'dark_all' : 'light_all';
+  tile = L.tileLayer(`https://{s}.basemaps.cartocdn.com/${k}/{z}/{x}/{y}{r}.png`, {
+    subdomains: 'abcd', maxZoom: 19,
+    attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> © <a href="https://carto.com/attributions">CARTO</a>'
+  }).addTo(map);
+}
+function updateMap(list) {
+  if (!map) return;
+  layer.clearLayers(); markers.clear();
+  list.forEach(p => {
+    const m = L.marker([p.lat, p.lng], {
+      icon: L.divIcon({ className: 'pin', html: `<span>${short(p.precio)}</span>`, iconSize: [0, 0] }),
+      riseOnHover: true, keyboard: true, title: `${p.titulo}, ${COP.format(p.precio)}`
+    });
+    m.bindPopup(`<div class="pop"><b>${esc(p.titulo)}</b><span>${esc(p.zona)}, Barbosa</span><strong>${priceHTML(p).replace(/<[^>]+>/g, '')}</strong><button data-id="${p.id}">Ver detalle</button></div>`, { closeButton: false, offset: [0, -4] });
+    m.on('click', () => focusCard(p.id));
+    m.addTo(layer);
+    markers.set(p.id, m);
+  });
+  if (list.length) map.fitBounds(L.latLngBounds(list.map(p => [p.lat, p.lng])), { padding: [60, 60], maxZoom: 15 });
+  else map.setView(CENTRO, 13);
+}
+function pinOn(id, on) {
+  const m = markers.get(id); const el = m && m.getElement();
+  if (el) el.classList.toggle('on', on);
+}
+function focusCard(id) {
+  $$('.card.on').forEach(c => c.classList.remove('on'));
+  const c = $(`#grid .card[data-id="${id}"]`);
+  if (c) { c.classList.add('on'); if (!document.body.classList.contains('show-map')) c.scrollIntoView({ block: 'center', behavior: 'smooth' }); }
+}
+
+/* =====================================================================
+   DETALLE
+   ===================================================================== */
+function openDetail(id) {
+  const p = ALL.find(x => x.id === id); if (!p) return;
+  const fav = FAV.has(p.id);
+  const msg = encodeURIComponent(`Hola, vi "${p.titulo}" en Destino y quiero saber si sigue disponible.`);
+  $('#dlg-detail').innerHTML = `
+    ${art(p, 96)}
+      <button class="d-close" data-close aria-label="Cerrar">${ic('x', 20)}</button>
+    </div>
+    <div class="d-body">
+      <h2>${esc(p.titulo)}</h2>
+      <p class="where">${esc(TIPO[p.tipo])} en ${esc(p.zona)}, Barbosa. ${p.op === 'venta' ? 'En venta' : 'En arriendo'}.</p>
+      <p class="d-price">${priceHTML(p)}</p>
+      <div class="d-specs">
+        ${p.hab ? `<div>${ic('bed', 22)}<b>${p.hab}</b><span>Habitaciones</span></div>` : ''}
+        ${p.banos ? `<div>${ic('bath', 22)}<b>${p.banos}</b><span>Baños</span></div>` : ''}
+        <div>${ic('area', 22)}<b>${p.area.toLocaleString('es-CO')} m²</b><span>Área</span></div>
+        <div>${ic('check', 22)}<b>${hace(p.dias)}</b><span>Última verificación</span></div>
+      </div>
+      <p class="d-desc">${esc(p.desc)}</p>
+      <div class="d-from"><b>${esc(p.inmo)}</b><span>Inmobiliaria que publica este inmueble</span></div>
+    </div>
+    <div class="d-actions">
+      ${p.whatsapp ? `<a class="btn solid" target="_blank" rel="noopener" href="https://wa.me/${esc(p.whatsapp)}?text=${msg}">Escribir por WhatsApp</a>` : ''}
+      ${p.url ? `<a class="btn" target="_blank" rel="noopener" href="${esc(p.url)}">Ver publicación original</a>` : ''}
+      <button class="btn" data-fav="${p.id}" aria-pressed="${fav}">${ic('heart', 18)}<span>${fav ? 'Guardado' : 'Guardar'}</span></button>
+    </div>`;
+  $('#dlg-detail').showModal();
+}
+
+/* =====================================================================
+   INTERFAZ
+   ===================================================================== */
+function buildStatic() {
+  $('#logo-mark').innerHTML = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1d2a3a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONS.pin}</svg>`;
+  $('#go-ic').innerHTML = ic('search', 20);
+  $('#filters-ic').innerHTML = ic('sliders', 20);
+  $('#fav-btn').innerHTML = ic('heart', 20);
+  $$('[data-close].btn.round').forEach(b => b.innerHTML = ic('x', 20));
+  $('#map-toggle-ic').innerHTML = ic('map', 20);
+
+  const tipos = [['', 'Todas', 'todas'], ...Object.keys(TIPO_PL).map(k => [k, TIPO_PL[k], k])];
+  $('#types').innerHTML = tipos.map(([k, l, i]) => `<button class="type" data-tipo="${k}" aria-pressed="false">${ic(i, 26)}<span>${l}</span></button>`).join('');
+
+  const opts = (id, key) => {
+    $(id).innerHTML = [0, 1, 2, 3, 4].map(n => `<button class="opt" data-${key}="${n}" aria-pressed="false">${n ? n + '+' : 'Cualquiera'}</button>`).join('');
+  };
+  opts('#f-hab', 'hab'); opts('#f-banos', 'banos');
+}
+
+function buildDynamic() {
+  const zonas = [...new Set(LIVE.map(p => p.zona))].sort((a, b) => a.localeCompare(b, 'es'));
+  $('#f-zonas').innerHTML = zonas.map(z => `<button class="opt" data-zona="${esc(z)}" aria-pressed="false">${esc(z)}</button>`).join('');
+  $('#sugerencias').innerHTML = [...zonas, ...Object.values(TIPO_PL), ...[...new Set(LIVE.map(p => p.inmo))]].map(v => `<option value="${esc(v)}">`).join('');
+  const hidden = ALL.length - LIVE.length;
+  const n = LIVE.length;
+  $('#live-text').textContent = `${n} inmuebles activos hoy en ${[...new Set(LIVE.map(p => p.inmo))].length} inmobiliarias`;
+  $('#foot').innerHTML = `<p>Se ocultaron ${hidden} ${hidden === 1 ? 'inmueble' : 'inmuebles'} por estar inactivos o sin verificar en más de ${DIAS_MAX} días.</p>
+    ${usingDemo ? '<p>Estás viendo datos de demostración. Los precios, inmobiliarias y ubicaciones son ficticios.</p>' : ''}`;
+}
+
+function syncUI() {
+  $$('#ops button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.op === S.op)));
+  $$('#types .type').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.tipo ? S.tipos.has(b.dataset.tipo) : S.tipos.size === 0)));
+  $$('#f-hab .opt').forEach(b => b.setAttribute('aria-pressed', String(+b.dataset.hab === S.hab)));
+  $$('#f-banos .opt').forEach(b => b.setAttribute('aria-pressed', String(+b.dataset.banos === S.banos)));
+  $$('#f-zonas .opt').forEach(b => b.setAttribute('aria-pressed', String(S.zonas.has(b.dataset.zona))));
+  const n = detailFilters();
+  $('#filters-n').hidden = !n; $('#filters-n').textContent = n;
+  $('#fav-btn').setAttribute('aria-pressed', String(S.fav));
+  $('#sort').value = S.sort;
+  const t = theme();
+  $('#theme-btn').innerHTML = ic(t === 'dark' ? 'sun' : 'moon', 20);
+  $('#theme-btn').setAttribute('aria-label', t === 'dark' ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro');
+  $('#f-apply').textContent = `Ver ${LIVE.filter(match).length} inmuebles`;
+  const mapped = document.body.classList.contains('show-map');
+  $('#map-toggle-t').textContent = mapped ? 'Ver lista' : 'Ver mapa';
+  $('#map-toggle-ic').innerHTML = ic(mapped ? 'list' : 'map', 20);
+}
+function measure() { document.documentElement.style.setProperty('--hh', $('#top').offsetHeight + 'px'); }
+
+function setTheme(t) {
+  document.documentElement.setAttribute('data-theme', t);
+  store.set('destino:tema', t);
+  $('meta[name="theme-color"]').setAttribute('content', t === 'dark' ? '#1d2a3a' : '#f2f3f7');
+  setTiles(); syncUI();
+}
+function reset() {
+  Object.assign(S, { q: '', op: '', tipos: new Set(), zonas: new Set(), pmin: 0, pmax: 0, hab: 0, banos: 0, amin: 0, amax: 0, fav: false, explore: false });
+  $('#q').value = ''; $('#pmin').value = $('#pmax').value = $('#amin').value = $('#amax').value = '';
+}
+function toggleFav(id) {
+  FAV.has(id) ? FAV.delete(id) : FAV.add(id);
+  store.set('destino:fav', JSON.stringify([...FAV]));
+}
+
+const actions = {
+  all: () => { S.explore = true; },
+  fresh: () => { S.explore = true; S.sort = 'new'; },
+  rent: () => { S.op = 'arriendo'; },
+  cheap: () => { S.op = 'venta'; S.pmax = 250e6; $('#pmax').value = '250000000'; S.sort = 'asc'; },
+  rural: () => { S.tipos = new Set(['finca', 'lote']); },
+  reset
+};
+
+/* ---------- Eventos ---------- */
+document.addEventListener('click', e => {
+  const t = e.target;
+  const fav = t.closest('[data-fav]');
+  if (fav) {
+    e.stopPropagation();
+    toggleFav(+fav.dataset.fav);
+    if ($('#dlg-detail').open) { openDetail(+fav.dataset.fav); } else { render(); }
+    return;
+  }
+  const act = t.closest('[data-act]');
+  if (act) { actions[act.dataset.act](); S.sort = act.dataset.act === 'fresh' ? 'new' : (act.dataset.act === 'cheap' ? 'asc' : S.sort); render(); window.scrollTo({ top: 0 }); return; }
+  const dlgClose = t.closest('[data-close]');
+  if (dlgClose) { dlgClose.closest('dialog').close(); return; }
+  const pop = t.closest('.pop button');
+  if (pop) { openDetail(+pop.dataset.id); return; }
+  const c = t.closest('.card');
+  if (c) { openDetail(+c.dataset.id); return; }
+  const tipo = t.closest('[data-tipo]');
+  if (tipo) {
+    const k = tipo.dataset.tipo;
+    if (!k) S.tipos.clear(); else S.tipos.has(k) ? S.tipos.delete(k) : S.tipos.add(k);
+    render(); return;
+  }
+  const op = t.closest('[data-op]');
+  if (op) { S.op = op.dataset.op; render(); return; }
+  const hab = t.closest('[data-hab]'); if (hab) { S.hab = +hab.dataset.hab; render(); return; }
+  const ban = t.closest('[data-banos]'); if (ban) { S.banos = +ban.dataset.banos; render(); return; }
+  const zona = t.closest('[data-zona]');
+  if (zona) { const z = zona.dataset.zona; S.zonas.has(z) ? S.zonas.delete(z) : S.zonas.add(z); render(); return; }
+});
+document.addEventListener('keydown', e => {
+  if ((e.key === 'Enter' || e.key === ' ') && e.target.matches('.card')) { e.preventDefault(); openDetail(+e.target.dataset.id); }
+});
+document.addEventListener('mouseover', e => {
+  const c = e.target.closest('#grid .card'); if (c) pinOn(+c.dataset.id, true);
+});
+document.addEventListener('mouseout', e => {
+  const c = e.target.closest('#grid .card'); if (c) pinOn(+c.dataset.id, false);
+});
+$('#dlg-filters').addEventListener('click', e => { if (e.target === e.currentTarget) e.currentTarget.close(); });
+$('#dlg-detail').addEventListener('click', e => { if (e.target === e.currentTarget) e.currentTarget.close(); });
+
+$('#home-btn').addEventListener('click', () => { reset(); S.sort = 'rel'; render(); window.scrollTo({ top: 0 }); });
+$('#search').addEventListener('submit', e => { e.preventDefault(); S.q = norm($('#q').value); render(); $('#q').blur(); });
+$('#q').addEventListener('input', e => { S.q = norm(e.target.value); render(); });
+$('#filters-btn').addEventListener('click', () => { syncUI(); $('#dlg-filters').showModal(); });
+$('#fav-btn').addEventListener('click', () => { S.fav = !S.fav; render(); });
+$('#theme-btn').addEventListener('click', () => setTheme(theme() === 'dark' ? 'light' : 'dark'));
+$('#sort').addEventListener('change', e => { S.sort = e.target.value; render(); });
+$('#f-clear').addEventListener('click', () => {
+  Object.assign(S, { pmin: 0, pmax: 0, hab: 0, banos: 0, amin: 0, amax: 0, zonas: new Set() });
+  $('#pmin').value = $('#pmax').value = $('#amin').value = $('#amax').value = '';
+  render();
+});
+[['pmin', 'pmin'], ['pmax', 'pmax'], ['amin', 'amin'], ['amax', 'amax']].forEach(([id, k]) => {
+  $('#' + id).addEventListener('input', e => { S[k] = num(e.target.value); render(); });
+});
+$('#map-toggle').addEventListener('click', () => {
+  document.body.classList.toggle('show-map');
+  syncUI();
+  setTimeout(() => map && map.invalidateSize(), 60);
+});
+window.addEventListener('resize', measure);
+
+/* =====================================================================
+   ARRANQUE
+   ===================================================================== */
+function load(items, demo) {
+  usingDemo = demo;
+  ALL = items.map(p => ({ ...p, dias: diasDe(p) }));
+  LIVE = ALL.filter(p => p.activo !== false && p.dias <= DIAS_MAX);
+  buildDynamic();
+  render();
+}
+buildStatic();
+syncUI();
+load(DEMO, true);
+fetch(FUENTE, { cache: 'no-cache' })
+  .then(r => r.ok ? r.json() : Promise.reject())
+  .then(data => { if (Array.isArray(data) && data.length) load(data, false); })
+  .catch(() => {});
+window.addEventListener('load', measure);
+</script>
+</body>
+</html>
