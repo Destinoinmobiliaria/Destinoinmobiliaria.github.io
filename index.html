@@ -787,7 +787,14 @@
 <dialog id="dlg-admin" aria-labelledby="da-t">
   <div class="dlg-h"><h2 id="da-t">Administrar inmuebles</h2><button class="btn round" data-close aria-label="Cerrar"></button></div>
   <div class="dlg-b">
-    <p class="hint" id="adm-count"></p>
+  <fieldset style="margin-bottom: 15px; padding: 10px; border: 1px solid var(--line); border-radius: 12px;">
+  <legend>Conexión con GitHub</legend>
+  <label class="field">
+  <span>GitHub Personal Access Token (Se guarda solo en este navegador)</span>
+  <input id="gh-token" type="password" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx">
+  </label>
+  </fieldset>
+  <p class="hint" id="adm-count"></p>
     <p class="hint">Los cambios se guardan solo en este navegador. Para que todos los vean, exporta el archivo propiedades.json y súbelo al repositorio junto al index.html.</p>
     <div class="adm-bar">
       <button class="btn solid" id="adm-new">Nuevo inmueble</button>
@@ -826,7 +833,7 @@
         <label class="field"><span>WhatsApp con indicativo (opcional)</span><input id="fm-whatsapp" inputmode="numeric" placeholder="573001234567"></label>
         <label class="field"><span>Enlace de la publicación (opcional)</span><input id="fm-url" type="url" placeholder="https://"></label>
       </div>
-      <label class="field"><span>Enlace de una foto (opcional)</span><input id="fm-foto" type="url" placeholder="https://"></label>
+      <label class="field"><span>Seleccionar Fotos de la Propiedad (Puedes elegir varias)</span><input id="fm-foto-archivo" type="file" accept="image/*" multiple></label>
       <div class="checks">
         <label><input type="checkbox" id="fm-activo"> Activo (visible al público)</label>
         <label><input type="checkbox" id="fm-destacada"> Destacado</label>
@@ -877,6 +884,10 @@ const DIAS_MAX = 21;
 const CENTRO = [6.4377, -75.3314];
 const WHATSAPP = '573000000000';
 const PIN = '9912';
+
+const CLOUDINARY_CLOUD_NAME = "ivyxmiz6";
+const CLOUDINARY_PRESET = "destino_fotos";
+const GITHUB_REPO = "Destinoinmobiliaria/Destinoinmobiliaria.github.io";
 
 const DEMO = [
   { id: 1,  titulo: 'Casa esquinera con patio amplio', tipo: 'casa', op: 'venta', precio: 420000000, hab: 4, banos: 3, area: 180, zona: 'Centro', lat: 6.4385, lng: -75.3322, inmo: 'Aliada Inmobiliaria', destacada: true, activo: true, dias: 1, vistas: 310, desc: 'Casa de dos niveles a pocas cuadras del parque principal, con patio, zona de ropas y espacio para dos carros.', foto: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1200&q=80', fotos: ['https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1200&q=80', 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1200&q=80', 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=80'] },
@@ -1701,21 +1712,106 @@ function openForm(id) {
   initPick();
 }
 
-$('#fm').addEventListener('submit', e => {
+$('#fm').addEventListener('submit', async (e) => {
   e.preventDefault();
-  const v = k => $('#fm-' + k).value.trim();
-  const link = s => /^https?:\/\//i.test(s) ? s : '';
-  const rec = {
-    id: editing ? editing.id : Math.max(0, ...RAW.map(p => p.id)) + 1,
-    titulo: v('titulo'), tipo: v('tipo'), op: v('op'),
-    precio: num(v('precio')), hab: num(v('hab')), banos: num(v('banos')), area: num(v('area')),
-    zona: v('zona'), lat: pickPos[0], lng: pickPos[1], inmo: v('inmo'), desc: v('desc'),
-    whatsapp: v('whatsapp').replace(/\D/g, ''), url: link(v('url')), foto: link(v('foto')),
-    destacada: $('#fm-destacada').checked, activo: $('#fm-activo').checked,
-    verificada: hoy(), vistas: editing ? (editing.vistas || 0) : 0
-  };
-  RAW = editing ? RAW.map(p => p.id === rec.id ? rec : p) : [...RAW, rec];
-  $('#dlg-form').close(); commit();
+  
+  const token = $('#gh-token').value.trim();
+  const archivosFotos = $('#fm-foto-archivo').files;
+  
+  if (!token) {
+    alert("Por favor, ingresa tu GitHub Token en el panel de administración para poder guardar los cambios en la nube.");
+    return;
+  }
+
+  const submitBtn = e.target.querySelector('button[type="submit"]');
+  const txtOriginal = submitBtn.textContent;
+  submitBtn.disabled = true;
+  submitBtn.textContent = "Subiendo fotos...";
+
+  let urlsFotosSubidas = [];
+
+  try {
+    if (archivosFotos && archivosFotos.length > 0) {
+      for (let i = 0; i < archivosFotos.length; i++) {
+        const file = archivosFotos[i];
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('upload_preset', CLOUDINARY_PRESET);
+        formData.append('transformation', 'f_auto,q_auto'); 
+
+        const resCloudinary = await fetch(`https://cloudinary.com{CLOUDINARY_CLOUD_NAME}/image/upload`, {
+          method: 'POST',
+          body: formData
+        });
+
+        if (resCloudinary.ok) {
+          const dataCloudinary = await resCloudinary.json();
+          urlsFotosSubidas.push(dataCloudinary.secure_url);
+        }
+      }
+    }
+
+    const v = k => $('#fm-' + k).value.trim();
+    const link = s => /^https?:\/\//i.test(s) ? s : '';
+
+    let fotosFinales = urlsFotosSubidas.length > 0 ? urlsFotosSubidas : (editing && editing.fotos ? editing.fotos : []);
+    let fotoPrincipal = fotosFinales[0] || (editing ? editing.foto : "");
+
+    const rec = {
+      id: editing ? editing.id : Math.max(0, ...RAW.map(p => p.id)) + 1,
+      titulo: v('titulo'), tipo: v('tipo'), op: v('op'),
+      precio: num(v('precio')), hab: num(v('hab')), banos: num(v('banos')), area: num(v('area')),
+      zona: v('zona'), lat: pickPos[0], lng: pickPos[1], inmo: v('inmo'), desc: v('desc'),
+      whatsapp: v('whatsapp').replace(/\D/g, ''), url: link(v('url')),
+      foto: fotoPrincipal,
+      fotos: fotosFinales,
+      destacada: $('#fm-destacada').checked, activo: $('#fm-activo').checked,
+      verificada: new Date().toISOString().slice(0, 10), 
+      vistas: editing ? (editing.vistas || 0) : 0
+    };
+
+    RAW = editing ? RAW.map(p => p.id === rec.id ? rec : p) : [...RAW, rec];
+
+    submitBtn.textContent = "Guardando en GitHub...";
+    
+    const resGetJson = await fetch(`https://github.com{GITHUB_REPO}/contents/${FUENTE}`, {
+      headers: { 'Authorization': `token ${token}` }
+    });
+    
+    let shaJson = "";
+    if (resGetJson.ok) {
+      const dataGetJson = await resGetJson.json();
+      shaJson = dataGetJson.sha;
+    }
+
+    const jsonEnTexto = JSON.stringify(stored(), null, 2);
+    const jsonEnBase64 = btoa(unescape(encodeURIComponent(jsonEnTexto)));
+
+    const resPutJson = await fetch(`https://github.com{GITHUB_REPO}/contents/${FUENTE}`, {
+      method: 'PUT',
+      headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        message: `Admin Web - Propiedad: ${rec.titulo}`,
+        content: jsonEnBase64,
+        sha: shaJson
+      })
+    });
+
+    if (resPutJson.ok) {
+      alert("¡Éxito! Propiedad y fotos guardadas. Los cambios estarán en vivo en unos 2 minutos.");
+      $('#dlg-form').close();
+      commit();
+    } else {
+      alert("Error al guardar los datos en GitHub. Revisa los permisos de tu Token.");
+    }
+
+  } catch (error) {
+    console.error(error);
+    alert("Ocurrió un error inesperado al procesar el guardado.");
+  } finally {
+    submitBtn.disabled = false;
+    submitBtn.textContent = txtOriginal;
+  }
 });
 $('#adm-list').addEventListener('click', e => {
   const b = e.target.closest('[data-adm]'); if (!b) return;
