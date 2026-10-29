@@ -1,3 +1,9 @@
+¡Hola! He aplicado los dos cambios que pediste:
+
+El mapa en modo oscuro: Se forzó el uso del mismo proveedor de mapas claro (OpenStreetMap) de manera constante, pero mediante CSS apliqué un filtro (invert y hue-rotate) para que los colores se vuelvan oscuros automáticamente al cambiar el tema, corrigiendo así el error del proveedor anterior.
+El nuevo diseño emergente del mapa (Popup): Se reconstruyó la tarjeta que aparece al dar clic sobre el precio en el mapa. Ahora tiene la estructura de la foto que enviaste: la imagen de fondo cubriendo toda la tarjeta, un difuminado (blur) oscuro en la parte inferior, el título, el precio grande, los iconos de área/habitaciones a la derecha y los detalles del anunciante en el borde inferior.
+Aquí tienes el código HTML completo con los ajustes correspondientes:
+
 <!DOCTYPE html>
 <html lang="es" data-theme="dark">
 <head>
@@ -234,13 +240,26 @@
   .pin.on { z-index: 1000 !important; }
   .pin.on span { background: var(--azul); color: var(--amarillo); border-color: var(--amarillo); transform: translate(-50%, -50%) scale(1.14); }
   .leaflet-container { font-family: var(--body); }
-  .leaflet-popup-content-wrapper, .leaflet-popup-tip { background: var(--surface); color: var(--ink); }
-  .leaflet-popup-content-wrapper { border-radius: 14px; }
-  .leaflet-popup-content { margin: 12px 14px; min-width: 190px; }
-  .pop b { display: block; font: 700 15px/1.25 var(--display); }
-  .pop span { color: var(--muted); font-size: 13px; display: block; margin: 2px 0 8px; }
-  .pop strong { font: 700 17px var(--display); display: block; margin-bottom: 8px; }
-  .pop button { width: 100%; border: 0; border-radius: 999px; background: var(--accent); color: var(--on-accent); font-weight: 700; padding: 8px 12px; }
+  
+  /* Nuevo Popup Mapa (Estilo Tarjeta Blur) */
+  .leaflet-popup-content-wrapper { background: transparent !important; box-shadow: none !important; padding: 0 !important; }
+  .leaflet-popup-tip-container { display: none !important; }
+  .leaflet-popup-content { margin: 0 !important; }
+  .pop-card { width: 250px; height: 310px; border-radius: 20px; overflow: hidden; position: relative; color: #fff; font-family: var(--display); cursor: pointer; box-shadow: 0 12px 30px rgba(0,0,0,0.4); background: #1d2a3a; }
+  .pop-card .pop-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; }
+  .pop-card .pop-badge { position: absolute; top: 12px; left: 12px; background: rgba(255,255,255,0.95); color: #111; font-size: 11px; font-weight: 700; padding: 5px 10px; border-radius: 8px; display: flex; align-items: center; gap: 4px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+  .pop-card .pop-info { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(to top, rgba(20,25,20, 0.95) 0%, rgba(20,25,20, 0.8) 50%, transparent 100%); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); padding: 16px; display: flex; flex-direction: column; gap: 10px; }
+  .pop-card .pop-price { font-size: 22px; font-weight: 700; letter-spacing: -0.02em; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
+  .pop-card .pop-row { display: flex; justify-content: space-between; align-items: flex-end; gap: 12px; border-bottom: 1px solid rgba(255,255,255,0.15); padding-bottom: 12px; }
+  .pop-card .pop-texts { flex: 1; min-width: 0; }
+  .pop-card .pop-title { font-size: 14px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #f6eee0; margin-bottom: 2px; }
+  .pop-card .pop-sub { font-size: 12px; color: #a9a49b; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .pop-card .pop-specs { display: flex; gap: 12px; text-align: center; }
+  .pop-card .pop-specs > div { font-size: 13px; font-weight: 700; display: flex; flex-direction: column; align-items: center; gap: 2px; color: #f6eee0; }
+  .pop-card .pop-specs svg { opacity: 0.8; margin-bottom: 1px; }
+  .pop-card .pop-specs span { font-size: 10px; font-weight: 500; color: #a9a49b; }
+  .pop-card .pop-foot { font-size: 11px; color: #a9a49b; padding-top: 2px; }
+  
   .leaflet-control-attribution { background: color-mix(in srgb, var(--bg) 80%, transparent) !important; color: var(--muted) !important; }
   .leaflet-control-attribution a { color: var(--ink) !important; }
 
@@ -336,12 +355,13 @@
   .checks input { accent-color: var(--accent); width: 18px; height: 18px; }
   #pick-map { height: 240px; border-radius: 14px; overflow: hidden; background: var(--surface-2); }
   @media (max-width: 600px) { .two, .three { grid-template-columns: 1fr; } }
-  /* Mapa con tiles nativamente oscuros (Carto Positron Dark) en modo oscuro */
-  [data-theme="dark"] #map, [data-theme="dark"] #pick-map { background: #17263c; }
-  /* Tono azul-grisáceo como Google Maps oscuro (sin invertir colores) */
-  [data-theme="dark"] .leaflet-tile-pane .tiles-dark { filter: sepia(.55) hue-rotate(178deg) saturate(1.25) brightness(1.18) contrast(1.02); }
-  /* Plan B: OpenStreetMap oscurecido; invert + hue-rotate conserva el matiz del agua y la vegetación */
-  [data-theme="dark"] .leaflet-tile-pane .tiles-osm-dark { filter: invert(1) hue-rotate(195deg) saturate(.55) brightness(.82) contrast(.92); }
+  
+  /* Mapa de OpenStreetMap oscurecido por CSS en modo oscuro */
+  [data-theme="dark"] #map, [data-theme="dark"] #pick-map { background: #0f0f0f; }
+  [data-theme="dark"] .leaflet-tile-pane .map-tiles { 
+    filter: invert(1) hue-rotate(180deg) saturate(0.8) brightness(0.85) contrast(0.95); 
+  }
+  
   /* ---------- Menú de vidrio ---------- */
   .dock { position: relative; }
   #menu-btn { position: relative; }
@@ -1067,30 +1087,16 @@ function render() {
 let map, layer, tile;
 const markers = new Map();
 const theme = () => document.documentElement.getAttribute('data-theme');
-/* Capa base del mapa. Claro: OpenStreetMap. Oscuro: CARTO "dark_all" (tiles realmente oscuros, sin clave).
-   Si CARTO falla, cae a OpenStreetMap con un filtro suave que lo oscurece sin verse en negativo. */
 const OSM_URL = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
-const CARTO_URL = 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png';
 const ATTR_OSM = '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>';
-const ATTR_CARTO = ATTR_OSM + ' | © <a href="https://carto.com/attributions">CARTO</a>';
+
 function baseLayer(m, onOk, onFail) {
-  const dark = theme() === 'dark';
-  const cls = dark ? 'tiles-dark' : '';
-  let layer = L.tileLayer(dark ? CARTO_URL : OSM_URL, { maxZoom: 19, subdomains: 'abcd', attribution: dark ? ATTR_CARTO : ATTR_OSM, className: cls }).addTo(m);
-  let fallos = 0, cambiado = false;
+  let layer = L.tileLayer(OSM_URL, { maxZoom: 19, attribution: ATTR_OSM, className: 'map-tiles' }).addTo(m);
+  let fallos = 0;
   layer.on('tileload', () => { fallos = 0; onOk && onOk(); });
-  layer.on('tileerror', () => {
-    if (++fallos < 4) return;
-    if (dark && !cambiado) {   // plan B: OSM oscurecido con filtro de color
-      cambiado = true; fallos = 0; layer.remove();
-      layer = L.tileLayer(OSM_URL, { maxZoom: 19, attribution: ATTR_OSM, className: 'tiles-osm-dark' }).addTo(m);
-      layer.on('tileload', () => { onOk && onOk(); });
-      layer.on('tileerror', () => { if (++fallos === 4) onFail && onFail(); });
-    } else onFail && onFail();
-  });
+  layer.on('tileerror', () => { if (++fallos === 4) onFail && onFail(); });
   return { remove: () => layer.remove() };
 }
-
 
 function initMap() {
   if (map || typeof L === 'undefined') return;
@@ -1112,8 +1118,31 @@ function updateMap(list) {
       icon: L.divIcon({ className: 'pin', html: `<span>${short(p.precio)}</span>`, iconSize: [0, 0] }),
       riseOnHover: true, keyboard: true, title: `${p.titulo}, ${COP.format(p.precio)}`
     });
-    m.bindPopup(`<div class="pop"><b>${esc(p.titulo)}</b><span>${esc(p.zona)}, Barbosa</span><strong>${priceHTML(p).replace(/<[^>]+>/g, '')}</strong><button data-id="${p.id}">Ver detalle</button></div>`, { closeButton: false, offset: [0, -4] });
-    m.on('click', () => focusCard(p.id));
+    
+    const imgEl = p.foto ? `<img class="pop-bg" src="${esc(p.foto)}" alt="">` : `<div class="pop-bg" style="background: linear-gradient(135deg, #2c4159, #1d2a3a)"></div>`;
+    
+    m.bindPopup(`
+      <div class="pop-card" data-id="${p.id}">
+        ${imgEl}
+        ${p.destacada ? '<div class="pop-badge">⭐ Destacada</div>' : ''}
+        <div class="pop-info">
+          <div class="pop-price">Precio: ${short(p.precio)}</div>
+          <div class="pop-row">
+            <div class="pop-texts">
+              <div class="pop-title">${esc(p.inmo || p.titulo)}</div>
+              <div class="pop-sub">${esc(p.zona)}</div>
+            </div>
+            <div class="pop-specs">
+              ${p.area ? `<div>${ic('area', 16)} ${p.area}m²<br><span>Área</span></div>` : ''}
+              ${p.hab ? `<div>${ic('bed', 16)} ${p.hab}<br><span>Hab.</span></div>` : ''}
+            </div>
+          </div>
+          <div class="pop-foot">Por • ${esc(p.inmo || 'Inmobiliaria')} &nbsp;&nbsp; ${hace(p.dias)}</div>
+        </div>
+      </div>
+    `, { closeButton: false, offset: [0, -4] });
+    
+    m.on('popupopen', () => focusCard(p.id));
     m.addTo(layer);
     markers.set(p.id, m);
   });
@@ -1283,8 +1312,10 @@ document.addEventListener('click', e => {
   if (act) { actions[act.dataset.act](); render(); window.scrollTo({ top: 0 }); return; }
   const dlgClose = t.closest('[data-close]');
   if (dlgClose) { const d = dlgClose.closest('dialog'); if (d.id === 'dlg-detail') closeDetail(); else d.close(); return; }
-  const pop = t.closest('.pop button');
-  if (pop) { openDetail(+pop.dataset.id); return; }
+  
+  const pop = t.closest('.pop-card');
+  if (pop) { openDetail(+pop.dataset.id, pop.querySelector('.pop-bg')); return; }
+  
   const c = t.closest('.card');
   if (c) { openDetail(+c.dataset.id, c.querySelector('.art')); return; }
   const tipo = t.closest('[data-tipo]');
