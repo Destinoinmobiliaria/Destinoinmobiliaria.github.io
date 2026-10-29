@@ -235,24 +235,17 @@
   .pin.on span { background: var(--azul); color: var(--amarillo); border-color: var(--amarillo); transform: translate(-50%, -50%) scale(1.14); }
   .leaflet-container { font-family: var(--body); }
   
-  /* Nuevo Popup Mapa (Estilo Tarjeta Blur) */
+  /* Nuevo Popup Mapa (Estilo Tarjeta Blur con rediseño) */
   .leaflet-popup-content-wrapper { background: transparent !important; box-shadow: none !important; padding: 0 !important; }
   .leaflet-popup-tip-container { display: none !important; }
   .leaflet-popup-content { margin: 0 !important; }
   .pop-card { width: 250px; height: 310px; border-radius: 20px; overflow: hidden; position: relative; color: #fff; font-family: var(--display); cursor: pointer; box-shadow: 0 12px 30px rgba(0,0,0,0.4); background: #1d2a3a; }
   .pop-card .pop-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; }
-  .pop-card .pop-badge { position: absolute; top: 12px; left: 12px; background: rgba(255,255,255,0.95); color: #111; font-size: 11px; font-weight: 700; padding: 5px 10px; border-radius: 8px; display: flex; align-items: center; gap: 4px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
-  .pop-card .pop-info { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(to top, rgba(20,25,20, 0.95) 0%, rgba(20,25,20, 0.8) 50%, transparent 100%); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); padding: 16px; display: flex; flex-direction: column; gap: 10px; }
-  .pop-card .pop-price { font-size: 22px; font-weight: 700; letter-spacing: -0.02em; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
-  .pop-card .pop-row { display: flex; justify-content: space-between; align-items: flex-end; gap: 12px; border-bottom: 1px solid rgba(255,255,255,0.15); padding-bottom: 12px; }
-  .pop-card .pop-texts { flex: 1; min-width: 0; }
-  .pop-card .pop-title { font-size: 14px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #f6eee0; margin-bottom: 2px; }
-  .pop-card .pop-sub { font-size: 12px; color: #a9a49b; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .pop-card .pop-specs { display: flex; gap: 12px; text-align: center; }
-  .pop-card .pop-specs > div { font-size: 13px; font-weight: 700; display: flex; flex-direction: column; align-items: center; gap: 2px; color: #f6eee0; }
-  .pop-card .pop-specs svg { opacity: 0.8; margin-bottom: 1px; }
-  .pop-card .pop-specs span { font-size: 10px; font-weight: 500; color: #a9a49b; }
-  .pop-card .pop-foot { font-size: 11px; color: #a9a49b; padding-top: 2px; }
+  .pop-card .pop-info { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(to top, rgba(20,25,20, 0.95) 0%, rgba(20,25,20, 0.8) 60%, transparent 100%); padding: 20px 16px 16px; display: flex; flex-direction: column; gap: 4px; }
+  .pop-card .pop-title { font-size: 16px; font-weight: 600; color: #fff; white-space: normal; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.2; margin-bottom: 2px; }
+  .pop-card .pop-sub { font-size: 13px; color: #ccc; }
+  .pop-card .pop-foot { font-size: 11px; color: #aaa; margin-bottom: 8px; border-bottom: 1px solid rgba(255,255,255,0.15); padding-bottom: 8px; }
+  .pop-card .pop-price { font-size: 26px; font-weight: 800; color: #fff; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
   
   .leaflet-control-attribution { background: color-mix(in srgb, var(--bg) 80%, transparent) !important; color: var(--muted) !important; }
   .leaflet-control-attribution a { color: var(--ink) !important; }
@@ -262,7 +255,7 @@
     box-shadow: var(--shadow);
   }
 
-  /* ---------- Diálogos ---------- */
+  /* ---------- Diálogos y Slider de Fotos ---------- */
   dialog {
     border: 0; padding: 0; background: var(--surface); color: var(--ink);
     border-radius: 24px; box-shadow: var(--shadow); width: min(640px, calc(100vw - 24px)); max-height: calc(100dvh - 24px);
@@ -288,11 +281,29 @@
   .opt[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
   .hint { color: var(--muted); font-size: 13px; margin: 8px 0 0; }
 
-  .d-art { aspect-ratio: 16 / 8; position: relative; display: grid; place-items: center; color: rgba(246, 238, 224, .55); border-radius: 24px 24px 0 0; overflow: hidden; }
-  .d-art img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-  .d-close { position: absolute; top: 12px; right: 12px; z-index: 3; width: 40px; height: 40px; border-radius: 50%; border: 0; background: var(--surface-2); color: var(--ink); border: 1px solid var(--line); display: grid; place-items: center; }
+  /* Ampliación del panel Modal */
+  #dlg-detail { width: min(1200px, calc(100vw - 32px)); max-height: calc(100dvh - 32px); overflow: hidden; }
+  .d-wrap { position: relative; display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); max-height: calc(100dvh - 32px); }
+  .d-media { min-height: 480px; position: relative; }
+  .d-side { overflow-y: auto; display: flex; flex-direction: column; min-width: 0; position: relative; }
+  
+  /* CSS del Carrusel / Slider de Detalle */
+  .d-slider { position: relative; height: 100%; width: 100%; overflow: hidden; background: var(--surface-2); display: flex; }
+  .d-slider.art { aspect-ratio: auto; border-radius: 0; min-height: 100%; }
+  .d-slides { display: flex; height: 100%; transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1); }
+  .d-slide { height: 100%; position: relative; overflow: hidden; flex-shrink: 0; }
+  .d-slide img { width: 100%; height: 100%; object-fit: cover; }
+  .d-arrow { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(29, 42, 58, 0.4); color: white; border: none; border-radius: 50%; width: 44px; height: 44px; display: grid; place-items: center; cursor: pointer; z-index: 10; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.2); transition: background 0.2s; }
+  .d-arrow:hover { background: rgba(29, 42, 58, 0.8); }
+  .d-arrow.prev { left: 16px; }
+  .d-arrow.next { right: 16px; }
+  .d-dots { position: absolute; bottom: 16px; left: 50%; transform: translateX(-50%); display: flex; gap: 8px; z-index: 10; background: rgba(0,0,0,0.3); padding: 6px 10px; border-radius: 999px; backdrop-filter: blur(8px); }
+  .d-dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.4); cursor: pointer; transition: background 0.2s, transform 0.2s; }
+  .d-dot.act { background: white; transform: scale(1.2); }
+  
+  .d-close { position: absolute; top: 12px; right: 12px; z-index: 5; width: 40px; height: 40px; border-radius: 50%; border: 0; background: var(--surface-2); color: var(--ink); border: 1px solid var(--line); display: grid; place-items: center; }
   .d-body { padding: 20px 24px 8px; }
-  .d-body h2 { font: 700 28px/1.15 var(--display); letter-spacing: -.02em; margin: 0 0 4px; }
+  .d-body h2 { font: 700 28px/1.15 var(--display); letter-spacing: -.02em; margin: 0 0 4px; padding-right: 48px; }
   .d-price { font: 700 26px var(--display); margin: 14px 0 0; }
   .d-price small { font: 500 15px var(--body); color: var(--muted); }
   .d-specs { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 10px; margin: 18px 0; }
@@ -304,7 +315,7 @@
   .d-from { background: var(--bg); border-radius: 14px; padding: 12px 14px; margin-bottom: 8px; }
   .d-from b { display: block; }
   .d-from span { color: var(--muted); font-size: 14px; }
-  .d-actions { display: flex; flex-wrap: wrap; gap: 10px; padding: 12px 24px 24px; }
+  .d-actions { display: flex; flex-wrap: wrap; gap: 10px; padding: 12px 24px 24px; margin-top: auto; }
   .d-actions a { text-decoration: none; }
 
   .foot { padding: 40px 24px 70px; color: var(--muted); font-size: 14px; max-width: 1560px; margin: 0 auto; }
@@ -467,20 +478,10 @@
     body.compact .sub { row-gap: 0; }
     body.compact .seg { max-height: 0; padding-top: 0; padding-bottom: 0; border-width: 0; }
   }
-  /* ---------- Detalle amplio ---------- */
-  #dlg-detail { width: min(1080px, calc(100vw - 48px)); max-height: calc(100dvh - 48px); overflow: hidden; }
-  .d-wrap { position: relative; display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); max-height: calc(100dvh - 48px); }
-  .d-media { min-height: 380px; }
-  .d-media .art { aspect-ratio: auto; height: 100%; min-height: 380px; border-radius: 0; }
-  .d-side { overflow-y: auto; display: flex; flex-direction: column; min-width: 0; }
-  .d-side .d-actions { margin-top: auto; }
-  .d-body h2 { padding-right: 48px; }
-  .d-close { top: 14px; right: 14px; z-index: 5; }
   @media (max-width: 859px) {
     #dlg-detail { width: min(640px, calc(100vw - 24px)); max-height: calc(100dvh - 24px); overflow: auto; }
     .d-wrap { display: block; max-height: none; }
-    .d-media { min-height: 0; }
-    .d-media .art { height: auto; aspect-ratio: 16 / 9; min-height: 0; }
+    .d-media { min-height: 300px; }
     .d-side { overflow: visible; }
   }
   /* ---------- Sugerencias en vidrio y centrado del icono ---------- */
@@ -841,25 +842,46 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <script>
 /* =====================================================================
+   FUNCIONES DEL SLIDER DE FOTOS
+   ===================================================================== */
+window.moveSlide = function(dir, e) {
+  e.stopPropagation();
+  const sl = document.getElementById('d-slider');
+  if(!sl) return;
+  const total = sl.querySelectorAll('.d-slide').length;
+  let idx = parseInt(sl.dataset.idx) + dir;
+  if (idx < 0) idx = total - 1;
+  if (idx >= total) idx = 0;
+  window.goToSlide(idx, e);
+};
+
+window.goToSlide = function(idx, e) {
+  if(e) e.stopPropagation();
+  const sl = document.getElementById('d-slider');
+  if(!sl) return;
+  sl.dataset.idx = idx;
+  const slides = document.getElementById('d-slides');
+  const total = sl.querySelectorAll('.d-slide').length;
+  slides.style.transform = `translateX(-${(idx * 100) / total}%)`;
+  sl.querySelectorAll('.d-dot').forEach((d, i) => d.classList.toggle('act', i === idx));
+};
+
+/* =====================================================================
    DATOS
    Para usar datos reales, publica un archivo "propiedades.json" junto a
    este index.html con una lista de objetos con los mismos campos que
    DEMO. Si el archivo existe, se usa; si no, se usan los datos de prueba.
-   Un inmueble se muestra solo si activo !== false y su fecha de
-   verificación tiene como máximo DIAS_MAX días.
    ===================================================================== */
 const FUENTE = 'propiedades.json';
 const DIAS_MAX = 21;
 const CENTRO = [6.4377, -75.3314];
-/* Número de WhatsApp temporal: indicativo +57 y luego el celular (ej. 573001234567). Cámbialo solo aquí. */
 const WHATSAPP = '573000000000';
-/* Código de 4 dígitos para entrar al administrador (abre la página con #admin al final de la dirección). */
 const PIN = '9912';
 
 const DEMO = [
-  { id: 1,  titulo: 'Casa esquinera con patio amplio', tipo: 'casa', op: 'venta', precio: 420000000, hab: 4, banos: 3, area: 180, zona: 'Centro', lat: 6.4385, lng: -75.3322, inmo: 'Aliada Inmobiliaria', destacada: true, activo: true, dias: 1, vistas: 310, desc: 'Casa de dos niveles a pocas cuadras del parque principal, con patio, zona de ropas y espacio para dos carros.' },
+  { id: 1,  titulo: 'Casa esquinera con patio amplio', tipo: 'casa', op: 'venta', precio: 420000000, hab: 4, banos: 3, area: 180, zona: 'Centro', lat: 6.4385, lng: -75.3322, inmo: 'Aliada Inmobiliaria', destacada: true, activo: true, dias: 1, vistas: 310, desc: 'Casa de dos niveles a pocas cuadras del parque principal, con patio, zona de ropas y espacio para dos carros.', foto: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1200&q=80', fotos: ['https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1200&q=80', 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1200&q=80', 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=80'] },
   { id: 2,  titulo: 'Apartamento remodelado cerca al parque', tipo: 'apartamento', op: 'venta', precio: 235000000, hab: 3, banos: 2, area: 78, zona: 'Centro', lat: 6.4369, lng: -75.3305, inmo: 'Hogar Barbosa', activo: true, dias: 2, vistas: 220, desc: 'Tercer piso con balcón, cocina integral y buena ventilación. Edificio con portería y ascensor.' },
-  { id: 3,  titulo: 'Casa campestre con piscina', tipo: 'casa', op: 'venta', precio: 690000000, hab: 4, banos: 4, area: 320, zona: 'Popalito', lat: 6.4452, lng: -75.3410, inmo: 'Cordillera Propiedades', destacada: true, activo: true, dias: 3, vistas: 480, desc: 'Lote plano con piscina, zona BBQ y vista a la montaña. A diez minutos del centro por vía pavimentada.' },
+  { id: 3,  titulo: 'Casa campestre con piscina', tipo: 'casa', op: 'venta', precio: 690000000, hab: 4, banos: 4, area: 320, zona: 'Popalito', lat: 6.4452, lng: -75.3410, inmo: 'Cordillera Propiedades', destacada: true, activo: true, dias: 3, vistas: 480, desc: 'Lote plano con piscina, zona BBQ y vista a la montaña. A diez minutos del centro por vía pavimentada.', foto: 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=1200&q=80', fotos: ['https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=1200&q=80', 'https://images.unsplash.com/photo-1502672260266-1c1c24226133?auto=format&fit=crop&w=1200&q=80'] },
   { id: 4,  titulo: 'Apartamento en arriendo en el centro', tipo: 'apartamento', op: 'arriendo', precio: 1400000, hab: 2, banos: 1, area: 58, zona: 'Centro', lat: 6.4392, lng: -75.3298, inmo: 'Aliada Inmobiliaria', activo: true, dias: 1, vistas: 190, desc: 'Segundo piso, luminoso, con cocina abierta y lavadero. Cerca de comercio y transporte.' },
   { id: 5,  titulo: 'Casa de dos pisos en conjunto cerrado', tipo: 'casa', op: 'venta', precio: 365000000, hab: 3, banos: 3, area: 120, zona: 'Isaza', lat: 6.4507, lng: -75.3172, inmo: 'Casas del Norte', activo: true, dias: 5, vistas: 160, desc: 'Conjunto con vigilancia, zona verde y parqueadero de visitantes. Casa lista para habitar.' },
   { id: 6,  titulo: 'Lote para construir con escritura', tipo: 'lote', op: 'venta', precio: 120000000, hab: 0, banos: 0, area: 600, zona: 'Graciano', lat: 6.4311, lng: -75.3491, inmo: 'Cordillera Propiedades', activo: true, dias: 4, vistas: 95, desc: 'Lote plano con servicios públicos cerca, acceso por vía destapada en buen estado.' },
@@ -887,7 +909,6 @@ const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': 
 const num = v => Number(String(v).replace(/\D/g, '')) || 0;
 const dots = v => String(v ?? '').replace(/\D/g, '').replace(/^0+(?=\d)/, '').replace(/\B(?=(\d{3})+(?!\d))/g, '.');
 const waNum = n => { n = String(n ?? '').replace(/\D/g, ''); return n.length === 10 ? '57' + n : n; };
-// Agrupa avisos de tamaño en un solo cuadro de animación (evita el aviso de ResizeObserver)
 const rafOnce = fn => { let q = 0; return () => { if (q) return; q = requestAnimationFrame(() => { q = 0; fn(); }); }; };
 const COP = new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 });
 const TIPO = { casa: 'Casa', apartamento: 'Apartamento', finca: 'Finca', lote: 'Lote', local: 'Local' };
@@ -933,8 +954,8 @@ const store = {
 /* =====================================================================
    ESTADO
    ===================================================================== */
-let ALL = [];          // todo lo que llega de las inmobiliarias
-let LIVE = [];         // solo lo activo y verificado
+let ALL = [];
+let LIVE = [];
 let usingDemo = true;
 
 const S = { q: '', op: '', tipos: new Set(), zonas: new Set(), pmin: 0, pmax: 0, hab: 0, banos: 0, amin: 0, amax: 0, fav: false, sort: 'rel', explore: false };
@@ -1018,7 +1039,7 @@ const rowsDef = [
   { t: 'Lo más relevante ahora', act: 'all', f: () => true, s: 'rel' },
   { t: 'Arrendamientos', act: 'rent', f: p => p.op === 'arriendo', s: 'rel' },
   { t: 'En venta', act: 'sale', f: p => p.op === 'venta', s: 'rel' },
-  { t: 'Fincas y lotes', act: 'rural', f: p => p.tipo === 'finca' || p.tipo === 'lote', s: 'rel' }
+  { t: 'Fincas & lotes', act: 'rural', f: p => p.tipo === 'finca' || p.tipo === 'lote', s: 'rel' }
 ];
 
 function renderHome() {
@@ -1115,23 +1136,17 @@ function updateMap(list) {
     
     const imgEl = p.foto ? `<img class="pop-bg" src="${esc(p.foto)}" alt="">` : `<div class="pop-bg" style="background: linear-gradient(135deg, #2c4159, #1d2a3a)"></div>`;
     
+    // Popup estilo tarjeta (rediseñado como solicitaste)
     m.bindPopup(`
       <div class="pop-card" data-id="${p.id}">
         ${imgEl}
-        ${p.destacada ? '<div class="pop-badge">⭐ Destacada</div>' : ''}
         <div class="pop-info">
-          <div class="pop-price">Precio: ${short(p.precio)}</div>
-          <div class="pop-row">
-            <div class="pop-texts">
-              <div class="pop-title">${esc(p.inmo || p.titulo)}</div>
-              <div class="pop-sub">${esc(p.zona)}</div>
-            </div>
-            <div class="pop-specs">
-              ${p.area ? `<div>${ic('area', 16)} ${p.area}m²<br><span>Área</span></div>` : ''}
-              ${p.hab ? `<div>${ic('bed', 16)} ${p.hab}<br><span>Hab.</span></div>` : ''}
-            </div>
+          <div class="pop-texts">
+            <div class="pop-title">${esc(p.titulo)}</div>
+            <div class="pop-sub">${esc(p.zona)}</div>
           </div>
           <div class="pop-foot">Por • ${esc(p.inmo || 'Inmobiliaria')} &nbsp;&nbsp; ${hace(p.dias)}</div>
+          <div class="pop-price">${short(p.precio)}</div>
         </div>
       </div>
     `, { closeButton: false, offset: [0, -4] });
@@ -1154,35 +1169,61 @@ function focusCard(id) {
 }
 
 /* =====================================================================
-   DETALLE
+   DETALLE CON CARRUSEL DE FOTOS
    ===================================================================== */
 function openDetail(id, srcArt) {
   const p = ALL.find(x => x.id === id); if (!p) return;
   const fav = FAV.has(p.id);
   const msg = encodeURIComponent(`Hola, vi "${p.titulo}" en Destino y quiero saber si sigue disponible.`);
-  $('#dlg-detail').innerHTML = `<div class="d-wrap">
-    <div class="d-media">${art(p, 110)}</div></div>
-    <button class="d-close" data-close aria-label="Cerrar">${ic('x', 20)}</button>
-    <div class="d-side">
-    <div class="d-body">
-      <h2>${esc(p.titulo)}</h2>
-      <p class="where">${esc(TIPO[p.tipo])} en ${esc(p.zona)}, Barbosa. ${p.op === 'venta' ? 'En venta' : 'En arriendo'}.</p>
-      <p class="d-price">${priceHTML(p)}</p>
-      <div class="d-specs">
-        ${p.hab ? `<div>${ic('bed', 22)}<b>${p.hab}</b><span>Habitaciones</span></div>` : ''}
-        ${p.banos ? `<div>${ic('bath', 22)}<b>${p.banos}</b><span>Baños</span></div>` : ''}
-        <div>${ic('area', 22)}<b>${p.area.toLocaleString('es-CO')} m²</b><span>Área</span></div>
-        <div>${ic('check', 22)}<b>${hace(p.dias)}</b><span>Última verificación</span></div>
+  
+  const images = p.fotos && p.fotos.length > 0 ? p.fotos : (p.foto ? [p.foto] : []);
+  let mediaHtml = '';
+  
+  if (images.length > 1) {
+    mediaHtml = `
+      <div class="d-slider art" id="d-slider" data-idx="0">
+        <button class="d-arrow prev" onclick="moveSlide(-1, event)" aria-label="Anterior">${ic('chevl', 24)}</button>
+        <button class="d-arrow next" onclick="moveSlide(1, event)" aria-label="Siguiente">${ic('chevr', 24)}</button>
+        <div class="d-slides" id="d-slides" style="width: ${images.length * 100}%;">
+          ${images.map(img => `<div class="d-slide" style="width: ${100 / images.length}%"><img src="${esc(img)}" alt=""></div>`).join('')}
+        </div>
+        <div class="d-dots">
+          ${images.map((_, i) => `<div class="d-dot ${i===0?'act':''}" onclick="goToSlide(${i}, event)"></div>`).join('')}
+        </div>
       </div>
-      <p class="d-desc">${esc(p.desc)}</p>
+    `;
+  } else if (images.length === 1) {
+     mediaHtml = `<div class="d-slider art"><div class="d-slide" style="width: 100%;"><img src="${esc(images[0])}" alt=""></div></div>`;
+  } else {
+     mediaHtml = `<div class="d-slider art">${art(p, 110)}</div>`;
+  }
+  
+  $('#dlg-detail').innerHTML = `
+    <button class="d-close" data-close aria-label="Cerrar">${ic('x', 20)}</button>
+    <div class="d-wrap">
+      <div class="d-media">${mediaHtml}</div>
+      <div class="d-side">
+        <div class="d-body">
+          <h2>${esc(p.titulo)}</h2>
+          <p class="where">${esc(TIPO[p.tipo])} en ${esc(p.zona)}, Barbosa. ${p.op === 'venta' ? 'En venta' : 'En arriendo'}.</p>
+          <p class="d-price">${priceHTML(p)}</p>
+          <div class="d-specs">
+            ${p.hab ? `<div>${ic('bed', 22)}<b>${p.hab}</b><span>Habitaciones</span></div>` : ''}
+            ${p.banos ? `<div>${ic('bath', 22)}<b>${p.banos}</b><span>Baños</span></div>` : ''}
+            <div>${ic('area', 22)}<b>${p.area.toLocaleString('es-CO')} m²</b><span>Área</span></div>
+            <div>${ic('check', 22)}<b>${hace(p.dias)}</b><span>Última verificación</span></div>
+          </div>
+          <p class="d-desc">${esc(p.desc)}</p>
+        </div>
+        <div class="d-actions">
+          <a class="btn solid" data-wa target="_blank" rel="noopener" href="https://wa.me/${esc(waNum(p.whatsapp || WHATSAPP))}?text=${msg}">Escribir por WhatsApp</a>
+          ${p.url ? `<a class="btn" target="_blank" rel="noopener" href="${esc(p.url)}">Ver publicación original</a>` : ''}
+          <button class="btn" data-fav="${p.id}" aria-pressed="${fav}">${ic('heart', 18)}<span>${fav ? 'Guardado' : 'Guardar'}</span></button>
+        </div>
+      </div>
     </div>
-    <div class="d-actions">
-      <a class="btn solid" data-wa target="_blank" rel="noopener" href="https://wa.me/${esc(waNum(p.whatsapp || WHATSAPP))}?text=${msg}">Escribir por WhatsApp</a>
-      ${p.url ? `<a class="btn" target="_blank" rel="noopener" href="${esc(p.url)}">Ver publicación original</a>` : ''}
-      <button class="btn" data-fav="${p.id}" aria-pressed="${fav}">${ic('heart', 18)}<span>${fav ? 'Guardado' : 'Guardar'}</span></button>
-    </div>
-    </div>
-    <div class="sbar sbar-dlg" aria-hidden="true"><i></i></div></div>`;
+    <div class="sbar sbar-dlg" aria-hidden="true"><i></i></div>`;
+    
   bindDetailBar();
   presentDetail(id, srcArt);
 }
@@ -1255,7 +1296,7 @@ function onScroll() {
 window.addEventListener('scroll', onScroll, { passive: true });
 window.addEventListener('resize', () => { if (!compact) return; compact = false; document.body.classList.remove('compact'); setTimeout(onScroll, 350); });
 if (window.ResizeObserver) new ResizeObserver(rafOnce(measure)).observe($('#top'));
-/* El buscador vive unido a las opciones; la lupa lo expande y las opciones se esconden un momento */
+
 const isOpenSearch = () => $('#search').classList.contains('open');
 function openSearch() {
   setTypeMenu(false);
@@ -1433,7 +1474,7 @@ function presentDetail(id, srcArt) {
   detailBarUpdate(false);
   setTimeout(() => detailBarUpdate(false), 720);
   if (reduceMotion()) return;
-  const media = $('.d-media .art', dlg);
+  const media = $('.d-media .d-slider', dlg) || $('.d-media .art', dlg);
   const to = media.getBoundingClientRect();
   const canFly = srcArt && srcArt.isConnected && $('#fly').showPopover && to.width > 0;
   detailBusyUntil = performance.now() + 700;
@@ -1468,9 +1509,8 @@ function closeDetail() {
   detailClosing = true;
   dlg.classList.add('closing');
   dlg.animate([{ opacity: 1, transform: 'none' }, { opacity: 0, transform: 'scale(.97)' }], { duration: 320, easing: EASE, fill: 'forwards' });
-  const media = $('.d-media .art', dlg);
+  const media = $('.d-media .d-slider', dlg) || $('.d-media .art', dlg);
   const src = pickSrc();
-  // si la tarjeta quedó fuera de la pantalla, se acerca (el fondo está desenfocado y no se nota)
   if (src && !inView(src.getBoundingClientRect())) src.scrollIntoView({ block: 'center', inline: 'center', behavior: 'instant' });
   const r = src && src.getBoundingClientRect();
   if (r && inView(r) && media && $('#fly').showPopover) {
@@ -1484,7 +1524,7 @@ function closeDetail() {
   }
 }
 $('#dlg-detail').addEventListener('cancel', e => { e.preventDefault(); closeDetail(); });
-/* ---------- Barra de desplazamiento corta, en el centro del borde derecho ---------- */
+/* ---------- Barra de desplazamiento corta (estilo Lusion) ---------- */
 function barMetrics(el) {
   return el === window ? { client: innerHeight, total: document.documentElement.scrollHeight, top: scrollY }
     : { client: el.clientHeight, total: el.scrollHeight, top: el.scrollTop };
@@ -1734,10 +1774,8 @@ else {
 }
 /* =====================================================================
    CARRUSEL DE TIPOS (experimento)
-   Basado en "Unwoven". Se descarga three.js y GSAP solo cuando la sección
-   está cerca de la pantalla. Para quitarlo: borra la sección #loom y este bloque.
    ===================================================================== */
-const LOOM_DIR = '';   // carpeta de las fotos dentro del repositorio, por ejemplo 'img/'
+const LOOM_DIR = '';
 const LOOM = [
   ['casa', 'casas'],
   ['apartamento', 'apartamentos'],
@@ -1745,7 +1783,7 @@ const LOOM = [
   ['lote', 'lotes'],
   ['local', 'locales']
 ];
-const LOOM_EXT = ['jpg', 'png', 'webp', 'jpeg'];   // formatos que acepta; usa el que quieras (fincas.png, fincas.jpg…)
+const LOOM_EXT = ['jpg', 'png', 'webp', 'jpeg'];
 const LOOM_PALETTES = [
   { base: ['#f6d5c3', '#e7a48b'], blobs: ['#f2b8a0', '#b86b4b', '#ffe9d9'] },
   { base: ['#dfe7f5', '#9fb4d8'], blobs: ['#7d97c6', '#3a5387', '#f0f4ff'] },
@@ -1771,17 +1809,9 @@ function initLoom() {
   const stage = $('#loom-stage');
   const isMobile = window.matchMedia('(max-width: 768px)').matches;
   const CONFIG = { 
-    threads: 26, 
-    segments: 20, 
-    cardMaxHeight: isMobile ? 280 : 540,           // Más grande en desktop para aprovechar espacio
-    cardHeightRatio: isMobile ? 0.65 : 0.92,      // Más alto en desktop
-    cardAspect: 1,                                 // Vuelta a cuadrado (1:1)
-    cardGapRatio: 0.04,                            // Reducido de 0.11 a 0.04 (tarjetas más cerca)
-    cardRadius: 20, 
-    scrollSpeed: 95, 
-    flingMax: 4200, 
-    tearZoneRatio: 0.26, 
-    tearZoneMax: isMobile ? 250 : 380             // Zona de deformación más pequeña en mobile
+    threads: 26, segments: 20, 
+    cardMaxHeight: isMobile ? 280 : 540, cardHeightRatio: isMobile ? 0.65 : 0.92, cardAspect: 1, cardGapRatio: 0.04, cardRadius: 20, 
+    scrollSpeed: 95, flingMax: 4200, tearZoneRatio: 0.26, tearZoneMax: isMobile ? 250 : 380
   };
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   let renderer = null;
@@ -1792,7 +1822,6 @@ function initLoom() {
   const scene = new THREE.Scene();
   const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, -100, 100);
 
-  /* ---- Tarjetas dibujadas en un lienzo: foto (o color) + nombre del tipo ---- */
   const W = 720, H = 720;
   const slots = LOOM.map(([tipo, file], i) => {
     const canvas = document.createElement('canvas'); canvas.width = W; canvas.height = H;
@@ -1834,7 +1863,6 @@ function initLoom() {
   });
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => slots.forEach(sl => sl.paint()));
 
-  /* ---- Shaders ---- */
   const VERTEX_SHADER = `
     attribute float aThread; attribute float aRim;
     uniform float uTime; uniform float uHalfWidth; uniform float uZone; uniform float uStrength; uniform float uWobble; uniform float uSeed;
@@ -1934,7 +1962,7 @@ function initLoom() {
     if (geometry) geometry.dispose();
     geometry = buildRibbonGeometry(cardWidth, cardHeight, CONFIG.threads, CONFIG.segments);
     let count = Math.max(8, Math.ceil((vw + pitch * 3) / pitch));
-    count = Math.ceil(count / slots.length) * slots.length;   // el patrón de tipos cierra bien al dar la vuelta
+    count = Math.ceil(count / slots.length) * slots.length;   
     stripSpan = count * pitch;
     for (let i = 0; i < count; i++) {
       const slot = i % slots.length;
@@ -1957,7 +1985,6 @@ function initLoom() {
     rebuild();
   }
 
-  /* ---- Movimiento, arrastre y toque ---- */
   const baseSpeed = reduce ? 0 : CONFIG.scrollSpeed;
   const motion = { velocity: 0 };
   let offset = 0, dragging = false, lastX = 0, lastTime = 0, dragVelocity = 0, travel = 0, visible = true;
@@ -2079,7 +2106,6 @@ pinBoxes().forEach((b, i, all) => {
     all[Math.min(d.length, 3)].focus(); pinCheck();
   });
 });
-/* En celulares abre la app de WhatsApp directamente; si no la encuentra, usa el enlace web. */
 document.addEventListener('click', e => {
   const a = e.target.closest('[data-wa]');
   if (!a || !/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) return;
