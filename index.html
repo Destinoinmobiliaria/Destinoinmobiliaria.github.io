@@ -1760,7 +1760,7 @@ $('#fm').addEventListener('submit', async (e) => {
     const rec = {
       id: editing ? editing.id : Math.max(0, ...RAW.map(p => p.id)) + 1,
       titulo: v('titulo'), tipo: v('tipo'), op: v('op'),
-      precio: num(v('precio')), hab: num(v('hab')), banos: num(v('banos')), area: num(v('area')),
+      precio: parseInt(v('precio')) || 0, hab: parseInt(v('hab')) || 0, banos: parseInt(v('banos')) || 0, area: parseInt(v('area')) || 0,
       zona: v('zona'), lat: pickPos[0], lng: pickPos[1], inmo: v('inmo'), desc: v('desc'),
       whatsapp: v('whatsapp').replace(/\D/g, ''), url: link(v('url')),
       foto: fotoPrincipal,
