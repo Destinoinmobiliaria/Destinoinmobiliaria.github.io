@@ -1735,9 +1735,9 @@ $('#fm').addEventListener('submit', async (e) => {
       for (let i = 0; i < archivosFotos.length; i++) {
         const file = archivosFotos[i];
         const formData = new FormData();
+        const formData = new FormData();
         formData.append('file', file);
         formData.append('upload_preset', CLOUDINARY_PRESET);
-        formData.append('transformation', 'f_auto,q_auto'); 
 
         const resCloudinary = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`, {
           method: 'POST',
