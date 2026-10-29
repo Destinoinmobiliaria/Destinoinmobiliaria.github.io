@@ -1701,7 +1701,7 @@ function openForm(id) {
   editing = id ? RAW.find(p => p.id === id) : null;
   const p = editing || { tipo: 'casa', op: 'venta', activo: true, lat: CENTRO[0], lng: CENTRO[1] };
   $('#fm-title').textContent = editing ? 'Editar inmueble' : 'Nuevo inmueble';
-  ['titulo', 'tipo', 'op', 'precio', 'hab', 'banos', 'area', 'zona', 'inmo', 'desc', 'whatsapp', 'url', 'foto'].forEach(k => { $('#fm-' + k).value = p[k] ?? ''; });
+  ['titulo', 'tipo', 'op', 'precio', 'hab', 'banos', 'area', 'zona', 'inmo', 'desc', 'whatsapp', 'url'].forEach(k => { $('#fm-' + k).value = p[k] ?? ''; });
   $('#fm-precio').value = dots(p.precio);
   $('#fm-activo').checked = p.activo !== false;
   $('#fm-destacada').checked = !!p.destacada;
@@ -1739,7 +1739,7 @@ $('#fm').addEventListener('submit', async (e) => {
         formData.append('upload_preset', CLOUDINARY_PRESET);
         formData.append('transformation', 'f_auto,q_auto'); 
 
-        const resCloudinary = await fetch(`https://cloudinary.com{CLOUDINARY_CLOUD_NAME}/image/upload`, {
+        const resCloudinary = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`, {
           method: 'POST',
           body: formData
         });
@@ -1760,7 +1760,7 @@ $('#fm').addEventListener('submit', async (e) => {
     const rec = {
       id: editing ? editing.id : Math.max(0, ...RAW.map(p => p.id)) + 1,
       titulo: v('titulo'), tipo: v('tipo'), op: v('op'),
-      precio: parseInt(v('precio')) || 0, hab: parseInt(v('hab')) || 0, banos: parseInt(v('banos')) || 0, area: parseInt(v('area')) || 0,
+      precio: parseInt(v('precio').replace(/\D/g, '')) || 0, hab: parseInt(v('hab')) || 0, banos: parseInt(v('banos')) || 0, area: parseInt(v('area')) || 0,
       zona: v('zona'), lat: pickPos[0], lng: pickPos[1], inmo: v('inmo'), desc: v('desc'),
       whatsapp: v('whatsapp').replace(/\D/g, ''), url: link(v('url')),
       foto: fotoPrincipal,
@@ -1774,7 +1774,7 @@ $('#fm').addEventListener('submit', async (e) => {
 
     submitBtn.textContent = "Guardando en GitHub...";
     
-    const resGetJson = await fetch(`https://github.com{GITHUB_REPO}/contents/${FUENTE}`, {
+    const resGetJson = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${FUENTE}`, {
       headers: { 'Authorization': `token ${token}` }
     });
     
@@ -1787,7 +1787,7 @@ $('#fm').addEventListener('submit', async (e) => {
     const jsonEnTexto = JSON.stringify(stored(), null, 2);
     const jsonEnBase64 = btoa(unescape(encodeURIComponent(jsonEnTexto)));
 
-    const resPutJson = await fetch(`https://github.com{GITHUB_REPO}/contents/${FUENTE}`, {
+    const resPutJson = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${FUENTE}`, {
       method: 'PUT',
       headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json' },
       body: JSON.stringify({
