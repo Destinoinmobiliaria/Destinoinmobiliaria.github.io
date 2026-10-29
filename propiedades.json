@@ -1,1 +1,33 @@
-
+[
+  {
+    "id": 1,
+    "titulo": "Villa Desertica",
+    "tipo": "finca",
+    "op": "venta",
+    "precio": 500000000,
+    "hab": 6,
+    "banos": 4,
+    "area": 350,
+    "zona": "Graciano",
+    "lat": 6.451307,
+    "lng": -75.327673,
+    "inmo": "Destino Inmobiliaria",
+    "desc": "Villa desertica a las afueras de Barbosa en Venta",
+    "whatsapp": "573145171053",
+    "url": "",
+    "foto": "https://res.cloudinary.com/ivyxmiz6/image/upload/v1793304648/khba6iilc5qu3ki6zmc4.png",
+    "fotos": [
+      "https://res.cloudinary.com/ivyxmiz6/image/upload/v1793304648/khba6iilc5qu3ki6zmc4.png",
+      "https://res.cloudinary.com/ivyxmiz6/image/upload/v1793304649/dllpiyiwdkanveeh3ddy.png",
+      "https://res.cloudinary.com/ivyxmiz6/image/upload/v1793304650/qhlblrrykk7hk8unrdf3.png",
+      "https://res.cloudinary.com/ivyxmiz6/image/upload/v1793304651/mvdyutr1lxtvazfayzcg.png",
+      "https://res.cloudinary.com/ivyxmiz6/image/upload/v1793304652/h9fnpeceg9tlpqxlxxtu.png",
+      "https://res.cloudinary.com/ivyxmiz6/image/upload/v1793304654/f7y0ah9743obdzokrngt.png",
+      "https://res.cloudinary.com/ivyxmiz6/image/upload/v1793304655/oswdtruppx0me1owt8el.png"
+    ],
+    "destacada": false,
+    "activo": true,
+    "verificada": "2026-10-29",
+    "vistas": 0
+  }
+]
