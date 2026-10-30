@@ -1091,7 +1091,7 @@ function focusCard(id) {
 function openDetail(id, srcArt) {
   const p = ALL.find(x => x.id === id); if (!p) return;
   const fav = FAV.has(p.id);
-  const msg = encodeURIComponent(`Hola, vi "${p.titulo}" en Destino y quiero saber si sigue disponible.`);
+  const msg = encodeURIComponent(`Hola, me gustaría sabeer sobre una publicación en Facebook`);
   const images = p.fotos && p.fotos.length > 0 ? p.fotos : (p.foto ? [p.foto] : []);
   let mediaHtml = '';
   
