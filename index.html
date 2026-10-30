@@ -52,36 +52,12 @@
     --shadow: 0 8px 28px rgba(0, 0, 0, .38);
   }
 
-  /* --- OBJETIVO 2: TRANSICIÓN 3D (Escenario y Perspectiva) --- */
-  html, body { overflow-x: hidden; }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
   body {
     letter-spacing: -.01em; margin: 0; background: var(--bg); color: var(--ink);
     font: 400 16px/1.5 var(--body); -webkit-font-smoothing: antialiased;
-    perspective: 1200px; /* Activa la perspectiva 3D */
   }
-  body.view-3d {
-    background: #050505; /* Horizonte digital oscuro */
-    overflow: hidden; /* Congela el scroll trasero */
-  }
-  #scene {
-    transition: transform 0.65s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.65s ease, filter 0.65s ease;
-    transform-style: preserve-3d;
-    will-change: transform, opacity;
-    background: var(--bg);
-    min-height: 100vh;
-  }
-  body.view-3d #scene {
-    transform: translateZ(-800px) scale(0.4);
-    opacity: 0.3;
-    filter: blur(4px);
-    pointer-events: none;
-    border-radius: 32px;
-    overflow: hidden;
-  }
-  /* ------------------------------------------------------------- */
-
-  * { box-sizing: border-box; }
-  html { scroll-behavior: smooth; }
   button, input, select { font: inherit; color: inherit; }
   button { cursor: pointer; }
   :focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
@@ -180,7 +156,16 @@
   .leaflet-popup-content { margin: 0 !important; }
   .pop-card { width: 250px; height: 310px; border-radius: 20px; overflow: hidden; position: relative; color: #fff; font-family: var(--display); cursor: pointer; box-shadow: 0 12px 30px rgba(0,0,0,0.4); background: #1d2a3a; }
   .pop-card .pop-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; }
-  .pop-card .pop-info { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(to top, rgba(20,25,20, 0.95) 0%, rgba(20,25,20, 0.8) 60%, transparent 100%); padding: 20px 16px 16px; display: flex; flex-direction: column; gap: 4px; }
+  
+  /* --- ACTUALIZACIÓN DIFUMINADO POPUP AZUL --- */
+  .pop-card .pop-info { 
+    position: absolute; bottom: 0; left: 0; right: 0; 
+    background: linear-gradient(to top, rgba(29, 42, 58, 0.96) 0%, rgba(29, 42, 58, 0.6) 55%, transparent 100%); 
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+    padding: 24px 16px 16px; display: flex; flex-direction: column; gap: 4px; 
+  }
+  
   .pop-card .pop-title { font-size: 16px; font-weight: 600; color: #fff; white-space: normal; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.2; margin-bottom: 2px; }
   .pop-card .pop-sub { font-size: 13px; color: #ccc; }
   .pop-card .pop-foot { font-size: 11px; color: #aaa; margin-bottom: 8px; border-bottom: 1px solid rgba(255,255,255,0.15); padding-bottom: 8px; }
@@ -217,21 +202,28 @@
   .d-media { min-height: 480px; position: relative; }
   .d-side { overflow-y: auto; display: flex; flex-direction: column; min-width: 0; position: relative; }
   
-  /* --- OBJETIVO 1: CORRECCIÓN DEL CAROUSEL --- */
-  .d-slider { position: relative; height: 100%; width: 100%; overflow: hidden; background: var(--surface-2); display: block; } /* Modificado: block envés de flex */
+  /* --- ACTUALIZACIÓN SLIDER MINIMALISTA --- */
+  .d-slider { position: relative; height: 100%; width: 100%; overflow: hidden; background: var(--surface-2); display: block; }
   .d-slider.art { aspect-ratio: auto; border-radius: 0; min-height: 100%; }
-  .d-slides { display: flex; width: 100%; height: 100%; transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1); } /* 100% asegura que herede y desborde sano */
-  .d-slide { flex: 0 0 100%; height: 100%; position: relative; overflow: hidden; } /* Modificado: ocupa estrictamente el 100% visual horizontal */
+  .d-slides { 
+    display: flex; width: 100%; height: 100%; 
+    overflow-x: auto; 
+    scroll-snap-type: x mandatory; /* Scroll snap nativo y fluido */
+    scrollbar-width: none; 
+    scroll-behavior: smooth;
+  } 
+  .d-slides::-webkit-scrollbar { display: none; }
+  .d-slide { 
+    flex: 0 0 100%; height: 100%; position: relative; overflow: hidden; 
+    scroll-snap-align: start; /* Ancla de forma exacta cada slide */
+  } 
   .d-slide img { width: 100%; height: 100%; object-fit: cover; display: block; }
-  /* ------------------------------------------- */
-
-  .d-arrow { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(29, 42, 58, 0.4); color: white; border: none; border-radius: 50%; width: 44px; height: 44px; display: grid; place-items: center; cursor: pointer; z-index: 10; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.2); transition: background 0.2s; }
-  .d-arrow:hover { background: rgba(29, 42, 58, 0.8); }
-  .d-arrow.prev { left: 16px; }
-  .d-arrow.next { right: 16px; }
-  .d-dots { position: absolute; bottom: 16px; left: 50%; transform: translateX(-50%); display: flex; gap: 8px; z-index: 10; background: rgba(0,0,0,0.3); padding: 6px 10px; border-radius: 999px; backdrop-filter: blur(8px); }
-  .d-dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.4); cursor: pointer; transition: background 0.2s, transform 0.2s; }
-  .d-dot.act { background: white; transform: scale(1.2); }
+  
+  /* Puntos minimalistas flotantes */
+  .d-dots { position: absolute; bottom: 16px; left: 50%; transform: translateX(-50%); display: flex; gap: 8px; z-index: 10; background: rgba(0,0,0,0.2); padding: 5px 10px; border-radius: 999px; -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.1); }
+  .d-dot { width: 7px; height: 7px; border-radius: 50%; background: rgba(255,255,255,0.35); cursor: pointer; transition: background 0.3s, transform 0.3s; }
+  .d-dot.act { background: white; transform: scale(1.3); }
+  /* -------------------------------------- */
   
   .d-close { position: absolute; top: 12px; right: 12px; z-index: 5; width: 40px; height: 40px; border-radius: 50%; border: 0; background: var(--surface-2); color: var(--ink); border: 1px solid var(--line); display: grid; place-items: center; }
   .d-body { padding: 20px 24px 8px; }
@@ -389,17 +381,33 @@
   .suggest li small { margin-left: auto; color: var(--muted); font-size: 12px; }
   .suggest li:hover, .suggest li.active { background: color-mix(in srgb, var(--ink) 11%, transparent); }
   
-  /* --- OBJETIVO 2: ENTRADA DEL DETALLE --- */
+  /* --- ACTUALIZACIÓN ANIMACIÓN 3D TARJETA (Surge del fondo) --- */
+  @keyframes popIn {
+    0% { transform: scale(0.85); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+  }
+  @keyframes popOut {
+    0% { transform: scale(1); opacity: 1; }
+    100% { transform: scale(0.85); opacity: 0; }
+  }
   #dlg-detail {
-    transform: translateY(120%);
-    opacity: 0;
-    transition: transform 0.65s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.65s ease;
+    opacity: 0; transform: scale(0.85); 
     will-change: transform, opacity;
   }
-  #dlg-detail[open] { transform: translateY(0); opacity: 1; }
-  #dlg-detail.closing { transform: translateY(120%); opacity: 0; }
-  #dlg-detail::backdrop { background: transparent !important; backdrop-filter: none !important; -webkit-backdrop-filter: none !important; }
-  /* --------------------------------------- */
+  #dlg-detail[open] {
+    animation: popIn 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  }
+  #dlg-detail.closing {
+    animation: popOut 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  }
+  /* Mantener el blur en el fondo, que ahora sí se anima limpiamente */
+  #dlg-detail::backdrop {
+    background: rgba(252, 252, 252, .42);
+    -webkit-backdrop-filter: blur(16px) saturate(140%); backdrop-filter: blur(16px) saturate(140%);
+    transition: opacity 0.4s ease;
+  }
+  [data-theme="dark"] #dlg-detail::backdrop { background: rgba(15, 15, 15, .5); }
+  /* ----------------------------------------------------------- */
   
   #dlg-detail, .d-side { scrollbar-width: none; }
   #dlg-detail::-webkit-scrollbar, .d-side::-webkit-scrollbar { display: none; }
@@ -494,90 +502,87 @@
 </head>
 
 <body>
-<!-- OBJETIVO 2: ENVOLTORIO PARA LA TRANSICIÓN 3D -->
-<div id="scene">
-  <header class="top" id="top">
-    <div class="bar">
-      <button class="brand" id="home-btn" data-home aria-label="Destino Inmobiliaria, ir al inicio">
-        <img class="logo logo-dark" src="logo-oscuro.png" alt="Destino Inmobiliaria" width="134" height="52">
-        <img class="logo logo-light" src="logo-claro.png" alt="" aria-hidden="true" width="134" height="52">
-      </button>
-
-      <form class="search" id="search" role="search" autocomplete="off">
-        <div class="sfield">
-          <label class="sr" for="q">Buscar inmuebles</label>
-          <input id="q" type="search" tabindex="-1" role="combobox" aria-autocomplete="list" aria-controls="suggest" aria-expanded="false" placeholder="Encuentra tu destino aquí">
-          <div class="cops" role="group" aria-label="Operación">
-            <button type="button" id="type-btn" aria-haspopup="listbox" aria-expanded="false" aria-controls="type-list" aria-pressed="true"><span id="type-label">Tipo</span><svg class="ic chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
-            <button type="button" data-op="venta" aria-pressed="false">Comprar</button>
-            <button type="button" data-op="arriendo" aria-pressed="false">Arrendar</button>
-          </div>
-        </div>
-        <ul class="suggest" id="suggest" role="listbox" aria-label="Sugerencias"></ul>
-        <div class="sbar sbar-sug" aria-hidden="true"><i></i></div>
-        <ul class="typelist" id="type-list" role="listbox" aria-label="Tipo de inmueble"></ul>
-        <button class="go" type="submit" aria-label="Buscar" id="go-ic"></button>
-      </form>
-
-      <div class="tools">
-        <div class="dock" id="dock">
-          <button class="btn round" id="menu-btn" aria-expanded="false" aria-controls="dock-panel" aria-label="Abrir menú"></button>
-          <div class="dock-panel" id="dock-panel" role="group" aria-label="Opciones">
-            <button class="btn keep dock-item" id="filters-btn"><span id="filters-ic"></span><span class="lbl">Filtros</span><span class="badge" id="filters-n" hidden>0</span></button>
-            <button class="btn keep dock-item" id="fav-btn" aria-pressed="false"></button>
-            <button class="btn keep dock-item" id="theme-btn"></button>
-            <button class="btn keep dock-item" id="adm-btn" hidden></button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </header>
-  <div id="top-spacer" aria-hidden="true"></div>
-
-  <main id="home">
-    <section class="loom" id="loom" aria-label="Explorar por tipo de inmueble">
-      <div class="loom-stage" id="loom-stage" aria-hidden="true"></div>
-    </section>
-    <div class="wrap">
-      <section class="intro">
-        <h1>Todo lo que se vende y arrienda en Barbosa, en un solo lugar.</h1>
-      </section>
-      <div id="rows"></div>
-    </div>
-  </main>
-
-  <main id="results" hidden>
-    <div class="split">
-      <section class="list">
-        <div class="list-head">
-          <h1 id="count">…</h1>
-          <div class="sortbox" id="sortbox">
-            <button class="btn" id="sort-btn" aria-haspopup="listbox" aria-expanded="false" aria-controls="sort-list"><span id="sort-label">Más relevantes</span><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
-            <ul class="sortlist" id="sort-list" role="listbox" aria-label="Ordenar por">
-              <li role="option" data-sort="rel">Más relevantes</li>
-              <li role="option" data-sort="new">Verificados recientemente</li>
-              <li role="option" data-sort="asc">Precio: menor a mayor</li>
-              <li role="option" data-sort="desc">Precio: mayor a menor</li>
-            </ul>
-          </div>
-        </div>
-        <div class="grid" id="grid"></div>
-      </section>
-      <aside class="mapbox"><div id="map" role="application" aria-label="Mapa de inmuebles en Barbosa"></div>
-        <div class="map-note" id="map-note" hidden>No se pudo cargar el mapa. Revisa tu conexión o abre la página desde su dirección de GitHub Pages: los proveedores de mapas no entregan mapas a archivos abiertos desde el computador.</div></aside>
-    </div>
-  </main>
-
-  <button class="btn floating" id="map-toggle"><span id="map-toggle-ic"></span><span id="map-toggle-t">Ver mapa</span></button>
-
-  <footer class="foot" id="foot"></footer>
-  <div class="m-logo">
-    <button class="brand-m" data-home aria-label="Destino Inmobiliaria, ir al inicio">
+<header class="top" id="top">
+  <div class="bar">
+    <button class="brand" id="home-btn" data-home aria-label="Destino Inmobiliaria, ir al inicio">
       <img class="logo logo-dark" src="logo-oscuro.png" alt="Destino Inmobiliaria" width="134" height="52">
       <img class="logo logo-light" src="logo-claro.png" alt="" aria-hidden="true" width="134" height="52">
     </button>
+
+    <form class="search" id="search" role="search" autocomplete="off">
+      <div class="sfield">
+        <label class="sr" for="q">Buscar inmuebles</label>
+        <input id="q" type="search" tabindex="-1" role="combobox" aria-autocomplete="list" aria-controls="suggest" aria-expanded="false" placeholder="Encuentra tu destino aquí">
+        <div class="cops" role="group" aria-label="Operación">
+          <button type="button" id="type-btn" aria-haspopup="listbox" aria-expanded="false" aria-controls="type-list" aria-pressed="true"><span id="type-label">Tipo</span><svg class="ic chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
+          <button type="button" data-op="venta" aria-pressed="false">Comprar</button>
+          <button type="button" data-op="arriendo" aria-pressed="false">Arrendar</button>
+        </div>
+      </div>
+      <ul class="suggest" id="suggest" role="listbox" aria-label="Sugerencias"></ul>
+      <div class="sbar sbar-sug" aria-hidden="true"><i></i></div>
+      <ul class="typelist" id="type-list" role="listbox" aria-label="Tipo de inmueble"></ul>
+      <button class="go" type="submit" aria-label="Buscar" id="go-ic"></button>
+    </form>
+
+    <div class="tools">
+      <div class="dock" id="dock">
+        <button class="btn round" id="menu-btn" aria-expanded="false" aria-controls="dock-panel" aria-label="Abrir menú"></button>
+        <div class="dock-panel" id="dock-panel" role="group" aria-label="Opciones">
+          <button class="btn keep dock-item" id="filters-btn"><span id="filters-ic"></span><span class="lbl">Filtros</span><span class="badge" id="filters-n" hidden>0</span></button>
+          <button class="btn keep dock-item" id="fav-btn" aria-pressed="false"></button>
+          <button class="btn keep dock-item" id="theme-btn"></button>
+          <button class="btn keep dock-item" id="adm-btn" hidden></button>
+        </div>
+      </div>
+    </div>
   </div>
-</div> <!-- CIERRE DEL ESCENARIO 3D -->
+</header>
+<div id="top-spacer" aria-hidden="true"></div>
+
+<main id="home">
+  <section class="loom" id="loom" aria-label="Explorar por tipo de inmueble">
+    <div class="loom-stage" id="loom-stage" aria-hidden="true"></div>
+  </section>
+  <div class="wrap">
+    <section class="intro">
+      <h1>Todo lo que se vende y arrienda en Barbosa, en un solo lugar.</h1>
+    </section>
+    <div id="rows"></div>
+  </div>
+</main>
+
+<main id="results" hidden>
+  <div class="split">
+    <section class="list">
+      <div class="list-head">
+        <h1 id="count">…</h1>
+        <div class="sortbox" id="sortbox">
+          <button class="btn" id="sort-btn" aria-haspopup="listbox" aria-expanded="false" aria-controls="sort-list"><span id="sort-label">Más relevantes</span><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
+          <ul class="sortlist" id="sort-list" role="listbox" aria-label="Ordenar por">
+            <li role="option" data-sort="rel">Más relevantes</li>
+            <li role="option" data-sort="new">Verificados recientemente</li>
+            <li role="option" data-sort="asc">Precio: menor a mayor</li>
+            <li role="option" data-sort="desc">Precio: mayor a menor</li>
+          </ul>
+        </div>
+      </div>
+      <div class="grid" id="grid"></div>
+    </section>
+    <aside class="mapbox"><div id="map" role="application" aria-label="Mapa de inmuebles en Barbosa"></div>
+      <div class="map-note" id="map-note" hidden>No se pudo cargar el mapa. Revisa tu conexión o abre la página desde su dirección de GitHub Pages: los proveedores de mapas no entregan mapas a archivos abiertos desde el computador.</div></aside>
+  </div>
+</main>
+
+<button class="btn floating" id="map-toggle"><span id="map-toggle-ic"></span><span id="map-toggle-t">Ver mapa</span></button>
+
+<footer class="foot" id="foot"></footer>
+<div class="m-logo">
+  <button class="brand-m" data-home aria-label="Destino Inmobiliaria, ir al inicio">
+    <img class="logo logo-dark" src="logo-oscuro.png" alt="Destino Inmobiliaria" width="134" height="52">
+    <img class="logo logo-light" src="logo-claro.png" alt="" aria-hidden="true" width="134" height="52">
+  </button>
+</div>
 
 <!-- Filtros -->
 <dialog id="dlg-filters" aria-labelledby="df-t">
@@ -701,28 +706,20 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <script>
 /* =====================================================================
-   FUNCIONES DEL SLIDER DE FOTOS (OBJETIVO 1: CORREGIDAS)
+   FUNCIONES DEL SLIDER MINIMALISTA
    ===================================================================== */
-window.moveSlide = function(dir, e) {
-  e.stopPropagation();
-  const sl = document.getElementById('d-slider');
-  if(!sl) return;
-  const total = sl.querySelectorAll('.d-slide').length;
-  let idx = parseInt(sl.dataset.idx) + dir;
-  if (idx < 0) idx = total - 1;
-  if (idx >= total) idx = 0;
-  window.goToSlide(idx, e);
+window.goToSlide = function(idx) {
+  const slides = document.getElementById('d-slides');
+  if(!slides) return;
+  const w = slides.clientWidth;
+  slides.scrollTo({ left: w * idx, behavior: 'smooth' });
 };
 
-window.goToSlide = function(idx, e) {
-  if(e) e.stopPropagation();
-  const sl = document.getElementById('d-slider');
-  if(!sl) return;
-  sl.dataset.idx = idx;
-  const slides = document.getElementById('d-slides');
-  // Se translada el valor exacto de slide mediante porcentaje puro del hijo.
-  slides.style.transform = `translateX(-${idx * 100}%)`;
-  sl.querySelectorAll('.d-dot').forEach((d, i) => d.classList.toggle('act', i === idx));
+window.updateDots = function(e) {
+  const slides = e.target;
+  const w = slides.clientWidth;
+  const idx = Math.round(slides.scrollLeft / w);
+  document.querySelectorAll('#d-dots .d-dot').forEach((d, i) => d.classList.toggle('act', i === idx));
 };
 
 /* =====================================================================
@@ -962,7 +959,7 @@ function focusCard(id) {
 }
 
 /* =====================================================================
-   DETALLE CON CARRUSEL (OBJETIVOS INTEGRADOS)
+   DETALLE DE TARJETA
    ===================================================================== */
 function openDetail(id, srcArt) {
   const p = ALL.find(x => x.id === id); if (!p) return;
@@ -973,15 +970,12 @@ function openDetail(id, srcArt) {
   
   if (images.length > 1) {
     mediaHtml = `
-      <div class="d-slider art" id="d-slider" data-idx="0">
-        <button class="d-arrow prev" onclick="moveSlide(-1, event)" aria-label="Anterior">${ic('chevl', 24)}</button>
-        <button class="d-arrow next" onclick="moveSlide(1, event)" aria-label="Siguiente">${ic('chevr', 24)}</button>
-        <!-- OBJETIVO 1: Se remueven anchos calculados en línea en los slides -->
-        <div class="d-slides" id="d-slides">
+      <div class="d-slider art" id="d-slider">
+        <div class="d-slides" id="d-slides" onscroll="updateDots(event)">
           ${images.map(img => `<div class="d-slide"><img src="${esc(img)}" alt=""></div>`).join('')}
         </div>
-        <div class="d-dots">
-          ${images.map((_, i) => `<div class="d-dot ${i===0?'act':''}" onclick="goToSlide(${i}, event)"></div>`).join('')}
+        <div class="d-dots" id="d-dots">
+          ${images.map((_, i) => `<div class="d-dot ${i===0?'act':''}" onclick="goToSlide(${i})"></div>`).join('')}
         </div>
       </div>
     `;
@@ -1018,27 +1012,18 @@ function openDetail(id, srcArt) {
     <div class="sbar sbar-dlg" aria-hidden="true"><i></i></div>`;
     
   bindDetailBar();
-  presentDetail(id, srcArt);
+  presentDetail();
 }
 
-/* --- OBJETIVO 2: TRANSICIÓN 3D JS --- */
-let detailId = null, detailClosing = false;
-function presentDetail(id, srcArt) {
+let detailClosing = false;
+function presentDetail() {
   const dlg = $('#dlg-detail');
   if (dlg.open) return;
-  detailId = id; detailClosing = false;
+  detailClosing = false;
   dlg.classList.remove('closing');
-
-  // Ajuste dinámico del transform-origin para evitar saltos indeseados en el catálogo 
-  const scene = $('#scene');
-  scene.style.transformOrigin = `50% ${window.scrollY + window.innerHeight / 2}px`;
-
-  // Añade la clase al body para disparar la compresión 3D del wrapper
-  document.body.classList.add('view-3d');
-  
   dlg.showModal();
   detailBarUpdate(false);
-  setTimeout(() => detailBarUpdate(false), 720);
+  setTimeout(() => detailBarUpdate(false), 550);
 }
 
 function closeDetail() {
@@ -1048,22 +1033,17 @@ function closeDetail() {
   detailClosing = true;
   dlg.classList.add('closing');
   
-  // Reversa fluida devolviendo el catálogo a su tamaño original
-  document.body.classList.remove('view-3d');
-
-  // Cierra el modal cuando acabe la animación (aprox 600ms coincidiendo con CSS)
+  // Tiempo un poco menor a la transición para un cierre fluido
   setTimeout(() => {
     dlg.classList.remove('closing');
     dlg.close();
     detailClosing = false;
-  }, 600);
+  }, 400); 
 }
 $('#dlg-detail').addEventListener('cancel', e => { e.preventDefault(); closeDetail(); });
-/* ---------------------------------------------------- */
-
 
 /* =====================================================================
-   INTERFAZ Y RESTO DEL CÓDIGO INTACTO
+   INTERFAZ Y RESTO DEL CÓDIGO
    ===================================================================== */
 function buildStatic() {
   $('#go-ic').innerHTML = ic('search', 20); $('#filters-ic').innerHTML = ic('sliders', 20);
