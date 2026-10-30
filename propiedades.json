@@ -1,1 +1,31 @@
-
+[
+  {
+    "id": 1,
+    "titulo": "Apartamento en Popalito - Barbosa Antioquia",
+    "tipo": "apartamento",
+    "op": "arriendo",
+    "precio": 750000,
+    "hab": 2,
+    "banos": 1,
+    "area": 50,
+    "zona": "Popalito",
+    "lat": 6.472778,
+    "lng": -75.283685,
+    "inmo": "Inmobiliaria Hablemos de Negocios",
+    "desc": "Este apartamento de 50 m² se encuentra en el segundo nivel, ubicado en la Vereda Popalito de Barbosa, ofreciéndote un entorno natural y un alivio para tu presupuesto.\nZonas prácticas: Incluye una cocina semi-integral y un área de ropas independiente.\nCodigo del inmueble: 1080, comunicate con Inmobiliaria Hablemos de Negocios al 350 812 56 88.",
+    "whatsapp": "573508125688",
+    "url": "https://www.facebook.com/share/p/1H5nHFpXBV/",
+    "foto": "https://res.cloudinary.com/ivyxmiz6/image/upload/v1793379944/wj6i09wqd4g7uhw34m6f.jpg",
+    "fotos": [
+      "https://res.cloudinary.com/ivyxmiz6/image/upload/v1793379944/wj6i09wqd4g7uhw34m6f.jpg",
+      "https://res.cloudinary.com/ivyxmiz6/image/upload/v1793379945/xgblgaioj7cgylfiku2y.jpg",
+      "https://res.cloudinary.com/ivyxmiz6/image/upload/v1793379945/ruwrrw3laagarwnrelhd.jpg",
+      "https://res.cloudinary.com/ivyxmiz6/image/upload/v1793379946/a9je8lobvagwvajg94ii.jpg",
+      "https://res.cloudinary.com/ivyxmiz6/image/upload/v1793379947/sobflynjyh8glcsxsc6s.jpg"
+    ],
+    "destacada": false,
+    "activo": true,
+    "verificada": "2026-10-30",
+    "vistas": 0
+  }
+]
