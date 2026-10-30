@@ -27,5 +27,34 @@
     "activo": true,
     "verificada": "2026-10-30",
     "vistas": 0
+  },
+  {
+    "id": 2,
+    "titulo": "Apartamento nuevo de 3 habitaciones en El Guayabo",
+    "tipo": "apartamento",
+    "op": "arriendo",
+    "precio": 950000,
+    "hab": 3,
+    "banos": 1,
+    "area": 70,
+    "zona": "El Guayabo",
+    "lat": 6.487084,
+    "lng": -75.310007,
+    "inmo": "Inmobiliaria Hablemos de Negocios",
+    "desc": "Apartamento para estrenar de 70 m2 en un tercer piso con balcón, excelente iluminación natural y ventilación. Cuenta con 3 habitaciones, cocina semi-integral y zona de ropas independiente. Está ubicado en un entorno campestre y es apto para mascotas. Código del inmueble: 1079",
+    "whatsapp": "573508125688",
+    "url": "https://www.facebook.com/share/p/1Euaw5BhW1/",
+    "foto": "https://res.cloudinary.com/ivyxmiz6/image/upload/v1793382058/slgoe14awd4buat80mwt.jpg",
+    "fotos": [
+      "https://res.cloudinary.com/ivyxmiz6/image/upload/v1793382058/slgoe14awd4buat80mwt.jpg",
+      "https://res.cloudinary.com/ivyxmiz6/image/upload/v1793382059/pw3aqi0fvch160wdw2bc.jpg",
+      "https://res.cloudinary.com/ivyxmiz6/image/upload/v1793382059/ylb9zklzbhnlaaa6twj9.jpg",
+      "https://res.cloudinary.com/ivyxmiz6/image/upload/v1793382060/dfwgowvfon2zto00wmbt.jpg",
+      "https://res.cloudinary.com/ivyxmiz6/image/upload/v1793382061/tgc8wmvueeyofpt37fru.jpg"
+    ],
+    "destacada": false,
+    "activo": true,
+    "verificada": "2026-10-30",
+    "vistas": 0
   }
 ]
