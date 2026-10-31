@@ -56,5 +56,35 @@
     "activo": true,
     "verificada": "2026-10-30",
     "vistas": 0
+  },
+  {
+    "id": 3,
+    "titulo": "Apartamento de 3 habitaciones y 2 baños en Calle 13",
+    "tipo": "apartamento",
+    "op": "arriendo",
+    "precio": 1200000,
+    "hab": 3,
+    "banos": 2,
+    "area": 70,
+    "zona": "Centro",
+    "lat": 6.435674,
+    "lng": -75.330511,
+    "inmo": "Inmobiliaria Hablemos de Negocios",
+    "desc": "Apartamento de 70 m² ubicado en un segundo piso con diseño interior tranquilo y aislado del ruido de la calle. Cuenta con 3 habitaciones con clóset listos, 2 baños completos con calentador, cocina integral con barra americana, zona de lavandería independiente y citófono. Se permite el ingreso de 1 mascota. Código del inmueble: 1086.",
+    "whatsapp": "573223146150",
+    "url": "https://www.facebook.com/share/p/1CCx6j8k5V/",
+    "foto": "https://res.cloudinary.com/ivyxmiz6/image/upload/v1793405940/gtvh1phnqpbzaa3hjv5l.jpg",
+    "fotos": [
+      "https://res.cloudinary.com/ivyxmiz6/image/upload/v1793405940/gtvh1phnqpbzaa3hjv5l.jpg",
+      "https://res.cloudinary.com/ivyxmiz6/image/upload/v1793405941/m9evxxaerakd9xf7ttj3.jpg",
+      "https://res.cloudinary.com/ivyxmiz6/image/upload/v1793405941/j4l0aiez01qklwajuug8.jpg",
+      "https://res.cloudinary.com/ivyxmiz6/image/upload/v1793405942/rnz6hawce91t2gudahks.jpg",
+      "https://res.cloudinary.com/ivyxmiz6/image/upload/v1793405942/emtd77kz38n8ojlnrfcl.jpg"
+    ],
+    "destacada": false,
+    "expira": "2026-11-07",
+    "activo": true,
+    "verificada": "2026-10-31",
+    "vistas": 0
   }
 ]
