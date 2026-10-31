@@ -87,5 +87,35 @@
     "activo": true,
     "verificada": "2026-10-31",
     "vistas": 0
+  },
+  {
+    "id": 4,
+    "titulo": "Apartamento de 3 habitaciones en Barrio 30 de Mayo",
+    "tipo": "apartamento",
+    "op": "arriendo",
+    "precio": 1200000,
+    "hab": 3,
+    "banos": 1,
+    "area": 60,
+    "zona": "Centro",
+    "lat": 6.435927,
+    "lng": -75.333646,
+    "inmo": "Inmobiliaria Hablemos de Negocios",
+    "desc": "✨ ¡Descubre tu próximo hogar en el apacible Barrio 30 de Mayo en Barbosa! ✨\n\nEste hermoso apartamento de 60 m² (ubicado en un nivel 3 interno) te ofrece un entorno seguro y la máxima tranquilidad para tu familia, totalmente aislado del ruido del tráfico, el polvo y las miradas extrañas. 🏡\nDisfruta de espacios diseñados para tu comodidad:\n\n🛌 3 habitaciones equipadas con clósets totalmente terminados, listas para que organices todo sin estrés desde el primer día.\n\n🚿 Mañanas rápidas y sin frío, gracias a su calentador de agua a gas ya instalado.\n\n🍳 Cocina integral muy práctica y zona de lavandería independiente, con pisos fáciles de limpiar y desinfectar.\n\n🐶 ¡Tu peludito es bienvenido! Se permite 1 mascota para que la familia llegue completa, en un sector residencial ideal para sus paseos diarios.\n\n⚠️ Nota: Los apartamentos con todas estas comodidades y a este precio son muy escasos y se alquilan rápidamente.\n\n🔑 Código del inmueble: 911",
+    "whatsapp": "573508125688",
+    "url": "https://www.facebook.com/share/p/1DSgybNA83/",
+    "foto": "https://res.cloudinary.com/ivyxmiz6/image/upload/v1793486295/gu91ppreawsrddjeapu9.png",
+    "fotos": [
+      "https://res.cloudinary.com/ivyxmiz6/image/upload/v1793486295/gu91ppreawsrddjeapu9.png",
+      "https://res.cloudinary.com/ivyxmiz6/image/upload/v1793486296/izqupsqgt9txzwi6ekfl.png",
+      "https://res.cloudinary.com/ivyxmiz6/image/upload/v1793486297/jq71wolozdl1thsly8bd.png",
+      "https://res.cloudinary.com/ivyxmiz6/image/upload/v1793486298/zejizfijsela7ygvxxzu.png",
+      "https://res.cloudinary.com/ivyxmiz6/image/upload/v1793486299/tcubvb5nojrbxghpvxzv.png"
+    ],
+    "destacada": false,
+    "expira": "2026-11-07",
+    "activo": true,
+    "verificada": "2026-10-31",
+    "vistas": 0
   }
 ]
