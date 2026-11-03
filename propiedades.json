@@ -148,5 +148,38 @@
     "activo": true,
     "posicion": 0,
     "vistas": 0
+  },
+  {
+    "id": 6,
+    "titulo": "Apartamento de 3 habitaciones a media cuadra del Parque Principal",
+    "tipo": "apartamento",
+    "op": "arriendo",
+    "precio": 900000,
+    "hab": 3,
+    "banos": 2,
+    "area": 75,
+    "zona": "Centro",
+    "lat": 6.436192,
+    "lng": -75.330685,
+    "inmo": "Inmobiliaria IBR",
+    "desc": "Cómodo apartamento en 3er piso externo, con ubicación inmejorable a solo media cuadra del parque principal de Barbosa. Sus amplios ventanales garantizan una excelente iluminación natural.\n\nCaracterísticas principales:\n- Ubicación: Calle 14 (Parque Principal).\n- Área: 75 m² bien distribuidos.\n- Habitaciones: 3 (cuenta con 1 clóset).\n- Baños: 2.\n- Cocina: Sencilla.\n- Distribución: Sala comedor y zona de ropas.\n- Nivel: 3er piso (Externo).\n\nCódigo del inmueble: 320",
+    "whatsapp": "573045431055",
+    "url": "https://www.facebook.com/share/p/1GDaRGS1Cv/",
+    "foto": "https://res.cloudinary.com/ivyxmiz6/image/upload/v1793705053/sfqj7yirl65eoz84lahr.png",
+    "fotos": [
+      "https://res.cloudinary.com/ivyxmiz6/image/upload/v1793705053/sfqj7yirl65eoz84lahr.png",
+      "https://res.cloudinary.com/ivyxmiz6/image/upload/v1793705055/gxxujjwqipgz4ppvgf8a.png",
+      "https://res.cloudinary.com/ivyxmiz6/image/upload/v1793705057/qrnyb6knnorsz8jxq0zk.png",
+      "https://res.cloudinary.com/ivyxmiz6/image/upload/v1793705060/peyfpkqoojyzokl5acia.png",
+      "https://res.cloudinary.com/ivyxmiz6/image/upload/v1793705061/hhmr3jiueusmaznru5cu.png",
+      "https://res.cloudinary.com/ivyxmiz6/image/upload/v1793705064/bor4ta6xzp4zb6iettgn.png",
+      "https://res.cloudinary.com/ivyxmiz6/image/upload/v1793705066/svzoplivugvpt25uv053.png",
+      "https://res.cloudinary.com/ivyxmiz6/image/upload/v1793705068/ha2umc7we3dmkrrdy5xm.png",
+      "https://res.cloudinary.com/ivyxmiz6/image/upload/v1793705070/otupz9sokdxy3tlqe0zl.png"
+    ],
+    "destacada": false,
+    "activo": true,
+    "posicion": 0,
+    "vistas": 0
   }
 ]
