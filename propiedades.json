@@ -115,5 +115,38 @@
     "activo": true,
     "posicion": 0,
     "vistas": 0
+  },
+  {
+    "id": 5,
+    "titulo": "Apartamento de 2 habitaciones a dos cuadras del parque principal",
+    "tipo": "apartamento",
+    "op": "arriendo",
+    "precio": 1000000,
+    "hab": 2,
+    "banos": 1,
+    "area": 44,
+    "zona": "Centro",
+    "lat": 6.436996,
+    "lng": -75.329523,
+    "inmo": "Inmobiliaria IBR",
+    "desc": "Apartamento en primer piso interno con excelente ubicación a solo dos cuadras del parque principal de Barbosa. Diseño práctico y distribución eficiente para habitar de inmediato.\n\nCaracterísticas principales:\n- Ubicación: Carrera 13 - Calle Robles\n- Área: 44 m²\n- Habitaciones: 2 (cada una con clóset integrado)\n- Baños: 1\n- Cocina: Integral\n- Distribución: Sala comedor y zona de ropas\n- Nivel: 1 (interno)\n\nCódigo del inmueble: 322",
+    "whatsapp": "573045431055",
+    "url": "",
+    "foto": "https://res.cloudinary.com/ivyxmiz6/image/upload/v1793683505/xjaza0yaqhzvh18zseew.png",
+    "fotos": [
+      "https://res.cloudinary.com/ivyxmiz6/image/upload/v1793683505/xjaza0yaqhzvh18zseew.png",
+      "https://res.cloudinary.com/ivyxmiz6/image/upload/v1793683507/vkq16w2b62dpauzewwki.png",
+      "https://res.cloudinary.com/ivyxmiz6/image/upload/v1793683509/qhqj7v35nueyvfjgze7h.png",
+      "https://res.cloudinary.com/ivyxmiz6/image/upload/v1793683511/iltvqejzorueu8cmpgyf.png",
+      "https://res.cloudinary.com/ivyxmiz6/image/upload/v1793683513/jj6bmtl3uejjt7b5ithk.png",
+      "https://res.cloudinary.com/ivyxmiz6/image/upload/v1793683515/itfw0zvvqssq0a7xz4dk.png",
+      "https://res.cloudinary.com/ivyxmiz6/image/upload/v1793683518/mq5snmhc9kz7eshvfm1r.png",
+      "https://res.cloudinary.com/ivyxmiz6/image/upload/v1793683520/ugxtlkmou2yassjq2a5h.png",
+      "https://res.cloudinary.com/ivyxmiz6/image/upload/v1793683522/x97tsuhkdwnbtnvkmgh4.png"
+    ],
+    "destacada": false,
+    "activo": true,
+    "posicion": 0,
+    "vistas": 0
   }
 ]
