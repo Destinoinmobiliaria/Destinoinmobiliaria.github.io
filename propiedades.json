@@ -313,5 +313,34 @@
     "activo": true,
     "posicion": 0,
     "vistas": 0
+  },
+  {
+    "id": 12,
+    "titulo": "Apartamento de 3 habitaciones en Los Manantiales",
+    "tipo": "apartamento",
+    "op": "arriendo",
+    "precio": 1100000,
+    "hab": 3,
+    "banos": 1,
+    "area": 0,
+    "zona": "Los Manantiales",
+    "lat": 6.432381,
+    "lng": -75.329618,
+    "inmo": "Inmobiliaria Hablemos de Negocios",
+    "desc": "Apartamento en segundo piso con excelente distribución, ubicado en el tranquilo barrio Los Manantiales. Diseñado para familias que buscan comodidad, orden y espacios definidos a un canon muy accesible.\n\nCaracterísticas principales:\n- Ubicación: Barrio Los Manantiales, Barbosa.\n- Habitaciones: 3 dormitorios independientes.\n- Nivel: 2do piso (acceso cómodo con un solo tramo corto de escalas).\n- Zona de ropas: Separada y totalmente independiente de la cocina (evita olores en las prendas).\n\nCódigo del inmueble: 1071",
+    "whatsapp": "573508125688",
+    "url": "https://www.facebook.com/share/p/18g89ofa6C/",
+    "foto": "https://res.cloudinary.com/ivyxmiz6/image/upload/v1793899625/p6bd08twxbtqnu5dxdcr.jpg",
+    "fotos": [
+      "https://res.cloudinary.com/ivyxmiz6/image/upload/v1793899625/p6bd08twxbtqnu5dxdcr.jpg",
+      "https://res.cloudinary.com/ivyxmiz6/image/upload/v1793899626/exznzvy59thw8blhlo3k.jpg",
+      "https://res.cloudinary.com/ivyxmiz6/image/upload/v1793899626/vdetjctwzrx8svfq53dh.jpg",
+      "https://res.cloudinary.com/ivyxmiz6/image/upload/v1793899627/xr6j1chwlofxr1khlivy.jpg",
+      "https://res.cloudinary.com/ivyxmiz6/image/upload/v1793899628/dobcljgm8x31adjtzds2.jpg"
+    ],
+    "destacada": false,
+    "activo": true,
+    "posicion": 0,
+    "vistas": 0
   }
 ]
