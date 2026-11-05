@@ -253,5 +253,63 @@
     "activo": true,
     "posicion": 0,
     "vistas": 0
+  },
+  {
+    "id": 9,
+    "titulo": "Local comercial de 65 m² frente al Hospital General",
+    "tipo": "local",
+    "op": "arriendo",
+    "precio": 1800000,
+    "hab": 0,
+    "banos": 1,
+    "area": 65,
+    "zona": "Centro",
+    "lat": 6.435929,
+    "lng": -75.332826,
+    "inmo": "Inmobiliaria Hablemos de Negocios",
+    "desc": "Estratégico local comercial en primer piso, ubicado exactamente frente al Hospital General de Barbosa. Garantiza un alto flujo peatonal y visibilidad directa, ideal para farmacias, tiendas de insumos o centros de bienestar.\n\nCaracterísticas principales:\n- Ubicación: Frente al Hospital General de Barbosa.\n- Área: 65 m² de planta libre (espacio 100% abierto y sin muros).\n- Accesibilidad: Nivel 1 a pie de calle (sin escalones ni barreras de ingreso).\n- Acabados: Pisos en cerámica de alto tráfico y fácil limpieza.\n- Disponibilidad: Listo para traer mobiliario y empezar a facturar de inmediato.\n\nCódigo del inmueble: 1067",
+    "whatsapp": "573508125688",
+    "url": "https://www.facebook.com/share/p/1FHmo4mCch/",
+    "foto": "https://res.cloudinary.com/ivyxmiz6/image/upload/v1793898306/j4hw700fmsum4x0hvnk4.jpg",
+    "fotos": [
+      "https://res.cloudinary.com/ivyxmiz6/image/upload/v1793898306/j4hw700fmsum4x0hvnk4.jpg",
+      "https://res.cloudinary.com/ivyxmiz6/image/upload/v1793898306/hj3di4z7zj6vjf4wjbsc.jpg",
+      "https://res.cloudinary.com/ivyxmiz6/image/upload/v1793898307/zeocfzjrhryloxtxhvdp.jpg",
+      "https://res.cloudinary.com/ivyxmiz6/image/upload/v1793898308/fnpffuy6cw3zieeup0gp.jpg",
+      "https://res.cloudinary.com/ivyxmiz6/image/upload/v1793898308/do7bukeaksonjqhpnsvq.jpg"
+    ],
+    "destacada": false,
+    "activo": true,
+    "posicion": 0,
+    "vistas": 0
+  },
+  {
+    "id": 10,
+    "titulo": "Local comercial de 65 m² frente al Hospital General",
+    "tipo": "local",
+    "op": "arriendo",
+    "precio": 1800000,
+    "hab": 0,
+    "banos": 1,
+    "area": 65,
+    "zona": "Centro",
+    "lat": 6.435929,
+    "lng": -75.332826,
+    "inmo": "Inmobiliaria Hablemos de Negocios",
+    "desc": "Estratégico local comercial en primer piso, ubicado exactamente frente al Hospital General de Barbosa. Garantiza un alto flujo peatonal y visibilidad directa, ideal para farmacias, tiendas de insumos o centros de bienestar.\n\nCaracterísticas principales:\n- Ubicación: Frente al Hospital General de Barbosa.\n- Área: 65 m² de planta libre (espacio 100% abierto y sin muros).\n- Accesibilidad: Nivel 1 a pie de calle (sin escalones ni barreras de ingreso).\n- Acabados: Pisos en cerámica de alto tráfico y fácil limpieza.\n- Disponibilidad: Listo para traer mobiliario y empezar a facturar de inmediato.\n\nCódigo del inmueble: 1067",
+    "whatsapp": "573508125688",
+    "url": "https://www.facebook.com/share/p/1FHmo4mCch/",
+    "foto": "https://res.cloudinary.com/ivyxmiz6/image/upload/v1793898383/ipjgl2u8hwd2t9dnerid.jpg",
+    "fotos": [
+      "https://res.cloudinary.com/ivyxmiz6/image/upload/v1793898383/ipjgl2u8hwd2t9dnerid.jpg",
+      "https://res.cloudinary.com/ivyxmiz6/image/upload/v1793898383/oot2bvgcaymvfh1myflq.jpg",
+      "https://res.cloudinary.com/ivyxmiz6/image/upload/v1793898384/amh3chqh0vp2j9tlolcy.jpg",
+      "https://res.cloudinary.com/ivyxmiz6/image/upload/v1793898385/oqezlsx9y1ftb8tvk9ut.jpg",
+      "https://res.cloudinary.com/ivyxmiz6/image/upload/v1793898385/tsyczgqrxehetmh84ryb.jpg"
+    ],
+    "destacada": false,
+    "activo": true,
+    "posicion": 0,
+    "vistas": 0
   }
 ]
