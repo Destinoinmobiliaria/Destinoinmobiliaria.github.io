@@ -218,5 +218,40 @@
     "activo": true,
     "posicion": 0,
     "vistas": 0
+  },
+  {
+    "id": 8,
+    "titulo": "Finca de 2 habitaciones a 15 minutos del parque",
+    "tipo": "finca",
+    "op": "arriendo",
+    "precio": 2500000,
+    "hab": 2,
+    "banos": 2,
+    "area": 0,
+    "zona": "Popalito",
+    "lat": 6.474673,
+    "lng": -75.275583,
+    "inmo": "Inmobiliaria Alianza N",
+    "desc": "Finca en arriendo con excelente ubicación, a tan solo 15 minutos del parque principal de Barbosa. Ideal para quienes buscan tranquilidad con rápido acceso al pueblo.\n\nCaracterísticas principales:\n- Ubicación: Vereda Popalito, Barbosa, Antioquia.\n- Habitaciones: 2\nBaños: 2\n- Cocina: Integral\n- Distribución: Sala comedor, zona de ropas y amplios corredores\n- Exteriores: Cuenta con zona de parqueo\n- Servicios: Dispone de energía y agua veredal.",
+    "whatsapp": "573215864162",
+    "url": "https://www.facebook.com/share/p/1MLGu6D6Z7/",
+    "foto": "https://res.cloudinary.com/ivyxmiz6/image/upload/v1793896083/rrywjsxe1glj1bvbk1up.jpg",
+    "fotos": [
+      "https://res.cloudinary.com/ivyxmiz6/image/upload/v1793896083/rrywjsxe1glj1bvbk1up.jpg",
+      "https://res.cloudinary.com/ivyxmiz6/image/upload/v1793896084/h9s0oxm5ny0eiwobsojc.jpg",
+      "https://res.cloudinary.com/ivyxmiz6/image/upload/v1793896084/mganamqsorsmeev1gayu.jpg",
+      "https://res.cloudinary.com/ivyxmiz6/image/upload/v1793896085/qe94dujmpr5ob6mvs4kg.jpg",
+      "https://res.cloudinary.com/ivyxmiz6/image/upload/v1793896086/a7tmv2wulobwqpd0xwq6.jpg",
+      "https://res.cloudinary.com/ivyxmiz6/image/upload/v1793896087/kj8a3fg7nmn58xvr1wzc.jpg",
+      "https://res.cloudinary.com/ivyxmiz6/image/upload/v1793896088/z1u3m3nnnghxe0gzhxtp.jpg",
+      "https://res.cloudinary.com/ivyxmiz6/image/upload/v1793896089/s1xmvopay4e97fieuhvu.jpg",
+      "https://res.cloudinary.com/ivyxmiz6/image/upload/v1793896090/ziejuw1ffpyoonituqes.jpg",
+      "https://res.cloudinary.com/ivyxmiz6/image/upload/v1793896090/xq9kqlwoszaigyuhkqiq.jpg",
+      "https://res.cloudinary.com/ivyxmiz6/image/upload/v1793896091/qnbrt6gxw6ifp4cm0l0n.jpg"
+    ],
+    "destacada": false,
+    "activo": true,
+    "posicion": 0,
+    "vistas": 0
   }
 ]
