@@ -342,5 +342,34 @@
     "activo": true,
     "posicion": 0,
     "vistas": 0
+  },
+  {
+    "id": 13,
+    "titulo": "Apartamento moderno en Manantiales",
+    "tipo": "apartamento",
+    "op": "arriendo",
+    "precio": 1100000,
+    "hab": 3,
+    "banos": 1,
+    "area": 0,
+    "zona": "Los Manantiales",
+    "lat": 6.432636,
+    "lng": -75.32933,
+    "inmo": "Inmobiliaria Hablemos de Negocios",
+    "desc": "Apartamento moderno y completamente nuevo (para estrenar), ideal para quienes buscan un espacio bien iluminado, fresco y con acabados impecables.\n\nCaracterísticas principales:\n- Ubicación: Barrio Manantiales, Barbosa.\n- Habitaciones: 3 (espacios familiares cómodos para organizar a medida).\n- Baños: 1.\nZonas extra: Zona de lavandería.\n- Nivel: Piso 2 (altura perfecta que garantiza buena iluminación y privacidad sin mayor desgaste al subir).\n- Acabados: Pisos en cerámica y frescura total de un inmueble nuevo.\n\nCódigo del inmueble: 1071",
+    "whatsapp": "573508125688",
+    "url": "https://www.facebook.com/share/p/1CPJ2Vj2zz/",
+    "foto": "https://res.cloudinary.com/ivyxmiz6/image/upload/v1794330757/dqgeealtedkrzvx1sjns.jpg",
+    "fotos": [
+      "https://res.cloudinary.com/ivyxmiz6/image/upload/v1794330757/dqgeealtedkrzvx1sjns.jpg",
+      "https://res.cloudinary.com/ivyxmiz6/image/upload/v1794330758/kbyzhjunlvgqrzwtolso.jpg",
+      "https://res.cloudinary.com/ivyxmiz6/image/upload/v1794330759/cw2i9zjbtuda4bmlpadc.jpg",
+      "https://res.cloudinary.com/ivyxmiz6/image/upload/v1794330760/abeokwy7skhax5qe8pco.jpg",
+      "https://res.cloudinary.com/ivyxmiz6/image/upload/v1794330761/n9sgamjiouqkjotb57dj.jpg"
+    ],
+    "destacada": false,
+    "activo": true,
+    "posicion": 0,
+    "vistas": 0
   }
 ]
